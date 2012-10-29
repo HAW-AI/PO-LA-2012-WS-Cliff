@@ -110,8 +110,7 @@ public class Environment {
 		}
 	}
 
-	public Pair<Position, Double> nextState(Position pos, Direction dir)
-			throws Exception {
+	public Pair<Position, Double> nextState(Position pos, Direction dir) {
 		// create list, contains possible directions from pos
 		List<Direction> possibleDir = new ArrayList<Direction>();
 
@@ -119,7 +118,7 @@ public class Environment {
 		if (checkPosInField(pos)) {
 			this.agentPos = pos;
 		} else {
-			throw new Exception("pos is out of environment, pos(" + pos.x()
+			throw new RuntimeException("pos is out of environment, pos(" + pos.x()
 					+ " , " + pos.y() + ") not in env(" + this.minX + "..."
 					+ this.maxX + " , " + this.minY + "..." + this.maxY + ")");
 		}
