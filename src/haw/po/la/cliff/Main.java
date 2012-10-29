@@ -10,6 +10,8 @@ public class Main {
 		// TEST ENVIRONMENT
 		Environment env = new Environment();
 		Position startPos = new Position(0, 0);
+		//gui
+		GUI gui = new GUI(env);
 		//1 step
 		System.out.println("startPos:(" + startPos.x() + " , " + startPos.y()+ ") , UP");
 		List<Direction> dirList = env.getPossibleDirections(startPos);
@@ -31,6 +33,9 @@ public class Main {
 		reward = env.nextState(startPos, Direction.UP);
 		System.out.println("newPos: (" + reward.first.x() + " , "+ reward.first.y() + ")\treward: " + reward.second);
 		System.out.println("\n");
+		
+		//gui
+		gui.render(new Position(0,1));
 		
 		
 		

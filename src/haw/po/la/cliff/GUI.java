@@ -13,7 +13,7 @@ import java.applet.Applet;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class GUI extends Applet{
+public class GUI extends Applet implements IGUI{
 	
 	private int startx = 30;
 	private int starty = 10;
@@ -23,39 +23,35 @@ public class GUI extends Applet{
 	
 
 	//interface environment
-	public int width = 8;
-	public int height = 3;
-	public Position startField = new Position(0,0);
-	public Position endField = new Position(width-1,0);
+	public int width;// = 8;
+	public int height;// = 3;
+	public Position startField;// = new Position(0,0);
+	public Position endField;// = new Position(width-1,0);
 	public List<Position> cliffList;
 	public Position agentPos;
 	
 	public GUI(Environment env){
 		g = getGraphics();
-//		this.startField = env.startField;
-//		this.endField = endField;
-//		this.cliffList = cliffList;
-//		this.width = env.envSizeX;
-//		this.height = env.envSizeY;
-//		this.agentPos = env.envAgentValue;
+		this.startField = env.getStartPosition();
+		this.endField = env.getFinishPosition();
+		this.cliffList = env.getCliffPositions();
+		this.width = env.getWidth();
+		this.height = env.getHeigth();
+		this.agentPos = startField;
 		frame = new Frame();
 		frame.setResizable(true);
 		frame.add(this);
 		frame.pack();
 		frame.setSize(width*fieldSize+(2*startx),height*fieldSize+(2*starty));
-		draw(g);
+		//init();
 		frame.setVisible(true);	
 	}
 	
 //	public void init(){
-//		//g = getGraphics();
-//		//repaint();
-//		//while(true){
-//			//drawAgent();
-//		//}
+//		repaint();
 //	}
 	
-	private void draw (Graphics g){
+	public void paint (Graphics g){
 		this.g = g;
 		//Grid
 		g.setColor(Color.black);
@@ -88,11 +84,11 @@ public class GUI extends Applet{
 	
 	private void drawClear(){
 		if(agentPos == startField){
-			
+			//TODO
 		}else if(agentPos == endField){
-			
+			//TODO
 		}else if(cliffList.contains(agentPos)){
-			
+			//TODO
 		}
 	}
 	
