@@ -5,7 +5,7 @@ package haw.po.la.cliff;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Environment {
+public class Environment implements IEnvironment{
 
 	// dim of cliff environment
 	private int envSizeX;
@@ -33,7 +33,7 @@ public class Environment {
 	/**
 	 * Default Constructor
 	 */
-	public Environment() {
+	public Environment()  {
 		// default envDim
 		this(10, 10);
 		this.envField = new int[this.envSizeX][this.envSizeY];
@@ -224,69 +224,7 @@ public class Environment {
 		return result;
 	}
 
-	/**Get num of environment size/fields on x-axis
-	 * @return the envSizeX
-	 */
-	public int getEnvSizeX() {
-		return envSizeX;
-	}
 
-
-	/**Get num of environment size/fields on y-axis
-	 * @return the envSizeY
-	 */
-	public int getEnvSizeY() {
-		return envSizeY;
-	}
-
-	
-	/**
-	 * Get Position of startField
-	 * @return position of start field or null if none or more than one was found
-	 */
-	public Position getStartPos(){
-		Position retpos = null;
-		List<Position> startPos =	searchFieldOnEnv(this.envStartValue);
-		if(    ((!startPos.isEmpty()) & (startPos.size()<2))  ){
-			retpos=startPos.get(0);
-		}else{
-			System.out.println("ERROR startfeld nicht gefunden oder mehrfach gefunden");
-		}
-		
-		return retpos;
-	}
-	
-	
-	
-	/**
-	 * Get Position of finishField
-	 * @return position of finish field
-	 */
-	public Position getFinishPos(){
-		Position retpos = null;
-		List<Position> finishPos =	searchFieldOnEnv(this.envFinishValue);
-		if(    ((!finishPos.isEmpty()) & (finishPos.size()<2))  ){
-			retpos=finishPos.get(0);
-		}else{
-			System.out.println("ERROR finishField nicht gefunden oder mehrfach gefunden");
-		}
-		return retpos;
-	}
-	
-	/**
-	 * Get List of all Positions that represent the cliff
-	 * @return list of cliff positions
-	 */
-	public List<Position> getCliffPos(){
-		List<Position> retposList = null;
-		List<Position> cliffPos =	searchFieldOnEnv(this.envCliffValue);
-		if(    ((!cliffPos.isEmpty()) & (cliffPos.size()<this.envSizeX*this.envSizeY))  ){
-			retposList=cliffPos;
-		}else{
-			System.out.println("ERROR cliff nicht gefunden oder zuviele gefunden");
-		}
-		return retposList;
-	}
 	
 	
 	/**
@@ -304,6 +242,71 @@ public class Environment {
 		}
 		
 		return foundList;
+	}
+
+	@Override
+	/**
+	 * Get Position of startField
+	 * @return position of start field or null if none or more than one was found
+	 */
+	public Position getStartPosition() {
+		Position retpos = null;
+		List<Position> startPos =	searchFieldOnEnv(this.envStartValue);
+		if(    ((!startPos.isEmpty()) & (startPos.size()<2))  ){
+			retpos=startPos.get(0);
+		}else{
+			System.out.println("ERROR startfeld nicht gefunden oder mehrfach gefunden");
+		}
+		
+		return retpos;
+	}
+
+	@Override
+	/**
+	 * Get Position of finishField
+	 * @return position of finish field
+	 */
+	public Position getFinishPosition() {
+		Position retpos = null;
+		List<Position> finishPos =	searchFieldOnEnv(this.envFinishValue);
+		if(    ((!finishPos.isEmpty()) & (finishPos.size()<2))  ){
+			retpos=finishPos.get(0);
+		}else{
+			System.out.println("ERROR finishField nicht gefunden oder mehrfach gefunden");
+		}
+		return retpos;
+	}
+
+	@Override
+	/**
+	 * Get List of all Positions that represent the cliff
+	 * @return list of cliff positions
+	 */
+	public List<Position> getCliffPositions() {
+		List<Position> retposList = null;
+		List<Position> cliffPos =	searchFieldOnEnv(this.envCliffValue);
+		if(    ((!cliffPos.isEmpty()) & (cliffPos.size()<this.envSizeX*this.envSizeY))  ){
+			retposList=cliffPos;
+		}else{
+			System.out.println("ERROR cliff nicht gefunden oder zuviele gefunden");
+		}
+		return retposList;
+	}
+
+	@Override
+	/**Get num of environment size/fields on x-axis
+	 * @return the envSizeX
+	 */
+	public int getWidth() {
+		return envSizeX;
+	}
+
+	@Override
+	/**Get num of environment size/fields on y-axis
+	 * @return the envSizeY
+	 */
+	public int getHeigth() {
+		return envSizeY;
 	}
 	
 }
