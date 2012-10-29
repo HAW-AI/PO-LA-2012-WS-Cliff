@@ -86,12 +86,21 @@ public class GUI extends Applet{
 		g.fillOval(startx+((fieldSize+1)*(agentPos.x()-1)+1), starty+((fieldSize+1)*(agentPos.y()-1)+1), fieldSize-1, fieldSize-1);
 	}
 	
+	private void drawClear(){
+		if(agentPos == startField){
+			
+		}else if(agentPos == endField){
+			
+		}else if(cliffList.contains(agentPos)){
+			
+		}
+	}
+	
     public void render(Position agentPos) {
     	if (this.agentPos != agentPos){
+    		drawClear();
     		this.agentPos = agentPos;
     		drawAgent();
-    	}else{
-    		//overpaint old pos
     	}
     }
 }
