@@ -1,15 +1,21 @@
 package haw.po.la.cliff;
 
 public class Position {
+	
+	private int x;
+	private int y;
+	
+	
     public Position(int x, int y) {
-        // do smth
+        this.x =x;
+        this.y=y;
     }
     
     public int x() {
-        return -1;
+        return x;
     }
     
     public int y() {
-        return -1;
+        return y;
     }
 }
