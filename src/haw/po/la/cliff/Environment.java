@@ -10,6 +10,8 @@ public class Environment {
 	// dim of cliff environment
 	private int envSizeX;
 	private int envSizeY;
+	
+
 	// environment boundarys
 	private int maxX;
 	private int minX;
@@ -110,18 +112,19 @@ public class Environment {
 		}
 	}
 
-	public Pair<Position, Double> nextState(Position pos, Direction dir) {
+	public Pair<Position, Double> nextState(Position pos, Direction dir)
+			 {
 		// create list, contains possible directions from pos
 		List<Direction> possibleDir = new ArrayList<Direction>();
 
 		// check agentPosition is int he space of environment
-		if (checkPosInField(pos)) {
+//		if (checkPosInField(pos)) {
 			this.agentPos = pos;
-		} else {
-			throw new RuntimeException("pos is out of environment, pos(" + pos.x()
-					+ " , " + pos.y() + ") not in env(" + this.minX + "..."
-					+ this.maxX + " , " + this.minY + "..." + this.maxY + ")");
-		}
+//		} else {
+//			throw new Exception("pos is out of environment, pos(" + pos.x()
+//					+ " , " + pos.y() + ") not in env(" + this.minX + "..."
+//					+ this.maxX + " , " + this.minY + "..." + this.maxY + ")");
+//		}
 
 		// get all possible directions from agentpos
 		possibleDir.addAll(getPossibleDirections(this.agentPos));
@@ -221,4 +224,86 @@ public class Environment {
 		return result;
 	}
 
+	/**Get num of environment size/fields on x-axis
+	 * @return the envSizeX
+	 */
+	public int getEnvSizeX() {
+		return envSizeX;
+	}
+
+
+	/**Get num of environment size/fields on y-axis
+	 * @return the envSizeY
+	 */
+	public int getEnvSizeY() {
+		return envSizeY;
+	}
+
+	
+	/**
+	 * Get Position of startField
+	 * @return position of start field or null if none or more than one was found
+	 */
+	public Position getStartPos(){
+		Position retpos = null;
+		List<Position> startPos =	searchFieldOnEnv(this.envStartValue);
+		if(    ((!startPos.isEmpty()) & (startPos.size()<2))  ){
+			retpos=startPos.get(0);
+		}else{
+			System.out.println("ERROR startfeld nicht gefunden oder mehrfach gefunden");
+		}
+		
+		return retpos;
+	}
+	
+	
+	
+	/**
+	 * Get Position of finishField
+	 * @return position of finish field
+	 */
+	public Position getFinishPos(){
+		Position retpos = null;
+		List<Position> finishPos =	searchFieldOnEnv(this.envFinishValue);
+		if(    ((!finishPos.isEmpty()) & (finishPos.size()<2))  ){
+			retpos=finishPos.get(0);
+		}else{
+			System.out.println("ERROR finishField nicht gefunden oder mehrfach gefunden");
+		}
+		return retpos;
+	}
+	
+	/**
+	 * Get List of all Positions that represent the cliff
+	 * @return list of cliff positions
+	 */
+	public List<Position> getCliffPos(){
+		List<Position> retposList = null;
+		List<Position> cliffPos =	searchFieldOnEnv(this.envCliffValue);
+		if(    ((!cliffPos.isEmpty()) & (cliffPos.size()<this.envSizeX*this.envSizeY))  ){
+			retposList=cliffPos;
+		}else{
+			System.out.println("ERROR cliff nicht gefunden oder zuviele gefunden");
+		}
+		return retposList;
+	}
+	
+	
+	/**
+	 * Get list of field you search, your search will be set by a envValue, that represent start,finish,cliff or player
+	 * @param envDesriptionValue
+	 * @return
+	 */
+	private List<Position> searchFieldOnEnv(int envDesriptionValue){
+		List<Position> foundList = null;
+		
+		for(int x =0;x< this.envSizeX;x++){
+			for(int y=0; y<this.envSizeY;y++){
+//				envField[x][y];
+			}
+		}
+		
+		return foundList;
+	}
+	
 }
