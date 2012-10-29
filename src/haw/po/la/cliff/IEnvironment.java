@@ -43,4 +43,10 @@ public interface IEnvironment {
 	 */
 	public int getHeigth();
 	
+	/**
+	 * 
+	 * @return true if round are running and nextState() possible, otherwise agent had moved to cliff or finished the round, return false
+	 */
+	public boolean isRunnig();
+	
 }
