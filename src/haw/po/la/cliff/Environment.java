@@ -1,16 +1,16 @@
 package haw.po.la.cliff;
+
 /**
  * @author Bjoern Kulas
  */
 import java.util.ArrayList;
 import java.util.List;
 
-public class Environment implements IEnvironment{
+public class Environment implements IEnvironment {
 
 	// dim of cliff environment
 	private int envSizeX;
 	private int envSizeY;
-	
 
 	// environment boundarys
 	private int maxX;
@@ -20,24 +20,25 @@ public class Environment implements IEnvironment{
 	// playing field/environment
 	private int[][] envField;
 	// field description
-	private final int envAgentValue;
 	private final int envCliffValue;
 	private final int envStartValue;
 	private final int envFinishValue;
 	private final int envFreeFieldValue;
 	// agentPos
 	private Position agentPos;
-	//return Value of the new agentPos
-	private int newPosValue;
+	// return Value of the new agentPos
+	private int rewardValue;
+	// bool to ask if round are running
+	private boolean isRunning;
 
 	/**
 	 * Default Constructor
 	 */
-	public Environment()  {
+	public Environment() {
 		// default envDim
 		this(10, 10);
 		this.envField = new int[this.envSizeX][this.envSizeY];
-		
+
 		initField();
 	}
 
@@ -52,9 +53,9 @@ public class Environment implements IEnvironment{
 	 */
 	public Environment(int x, int y) {
 		// default description of fields......equivalent to reward?
-		// _______ Clif, S, F, free
-		this(x, y, -100, 1, 2, 0);
-	
+		// _______ Clif, S, Fi, free
+		this(x, y, -100, 0, 10, -1);
+
 	}
 
 	/**
@@ -67,23 +68,26 @@ public class Environment implements IEnvironment{
 	 * @param cliffVal
 	 *            value describes a CliffField in Environment in thousandth part
 	 * @param startVal
-	 *            value describes the StartField in Environment in thousandth part
+	 *            value describes the StartField in Environment in thousandth
+	 *            part
 	 * @param finishVal
-	 *            value describes the FinishField in Environment in thousandth part
+	 *            value describes the FinishField in Environment in thousandth
+	 *            part
 	 * @param freeFieldVal
 	 *            value describes a free field in Environment in thousandth part
 	 */
-	public Environment(int x, int y, int cliffVal, int startVal,int finishVal, int freeFieldVal) {
+	public Environment(int x, int y, int cliffVal, int startVal, int finishVal,
+			int freeFieldVal) {
 		// env
 		this.envSizeX = x;
 		this.envSizeY = y;
 		// fields
-		
+
 		this.envCliffValue = cliffVal;
 		this.envStartValue = startVal;
 		this.envFinishValue = finishVal;
 		this.envFreeFieldValue = freeFieldVal;
-		this.envAgentValue = 2000;//random value, must be unique
+		
 	}
 
 	/**
@@ -112,44 +116,49 @@ public class Environment implements IEnvironment{
 		}
 	}
 
-	public Pair<Position, Double> nextState(Position pos, Direction dir)
-			 {
+	public Pair<Position, Double> nextState(Position pos, Direction dir) {
 		// create list, contains possible directions from pos
 		List<Direction> possibleDir = new ArrayList<Direction>();
 
 		// check agentPosition is int he space of environment
-//		if (checkPosInField(pos)) {
+		if (checkPosInField(pos)) {
 			this.agentPos = pos;
-//		} else {
-//			throw new Exception("pos is out of environment, pos(" + pos.x()
-//					+ " , " + pos.y() + ") not in env(" + this.minX + "..."
-//					+ this.maxX + " , " + this.minY + "..." + this.maxY + ")");
-//		}
+
+		} else {
+			System.err
+					.println("ERROR:Env - nextState - checkPosInField returns false");
+		}
+		// } else {
+		// throw new Exception("pos is out of environment, pos(" + pos.x()
+		// + " , " + pos.y() + ") not in env(" + this.minX + "..."
+		// + this.maxX + " , " + this.minY + "..." + this.maxY + ")");
+		// }
 
 		// get all possible directions from agentpos
 		possibleDir.addAll(getPossibleDirections(this.agentPos));
 
 		// check new direction is possible
 		if (possibleDir.contains(dir)) {
-			moveAgent(dir);
+			setNewPosAndReward(dir);
 		} else {
-			// TODO
-			/*
-			 * Exception, Remain, none possibility test !?
-			 */
+			// param NULL to get in default case
+			setNewPosAndReward(null);
+
 		}
-		
-		Double retVal = (double) (this.newPosValue/1000);
-		
-		return new Pair<Position, Double>(new Position(this.agentPos.x(),this.agentPos.y()), retVal);
+
+		Double retVal = (double) (this.rewardValue);
+
+		return new Pair<Position, Double>(new Position(this.agentPos.x(),
+				this.agentPos.y()), retVal);
 	}
 
 	/**
-	 * move the agent in space of environment or let agent stay
+	 * move the agent in space of environment and set the reward for the move
 	 * 
-	 * @param dir is the agent move direction 
+	 * @param dir
+	 *            is the agent move direction
 	 */
-	private void moveAgent(Direction dir) {
+	private void setNewPosAndReward(Direction dir) {
 		Position newAgentPos = null;
 
 		// set freeFieldValue on old agentPos
@@ -158,25 +167,33 @@ public class Environment implements IEnvironment{
 		switch (dir) {
 		case UP:
 			newAgentPos = new Position(agentPos.x(), (this.agentPos.y() + 1));
-
+			break;
 		case RIGHT:
 			newAgentPos = new Position((agentPos.x() + 1), this.agentPos.y());
-
+			break;
 		case DOWN:
 			newAgentPos = new Position(agentPos.x(), (this.agentPos.y() - 1));
-
+			break;
 		case LEFT:
 			newAgentPos = new Position((agentPos.x() - 1), this.agentPos.y());
-
+			break;
 		default:
 			newAgentPos = this.agentPos;
 		}
-		//save the value of the new agentPosition, it will returned
-		this.newPosValue=this.envField[newAgentPos.x()][newAgentPos.y()];
-		//set agentValue on new agentPos
-		this.envField[newAgentPos.x()][newAgentPos.y()] = this.envAgentValue;
-		//update agentPos
+		// save the value of the new agentPosition, it will returned
+		this.rewardValue = this.envField[newAgentPos.x()][newAgentPos.y()];
+		// set agentValue on new agentPos
+		//		speichern nicht notwendig, this.envField[newAgentPos.x()][newAgentPos.y()] = this.envAgentValue;
+		// update agentPos
 		this.agentPos = newAgentPos;
+		
+		
+		// set isRunning true or false. False if agent move into cliff or finish
+		if(((this.rewardValue==this.envCliffValue) |(this.rewardValue==this.envFinishValue))){
+		this.isRunning=false;	
+		}else{
+			this.isRunning=true;
+		}
 	}
 
 	/**
@@ -224,23 +241,24 @@ public class Environment implements IEnvironment{
 		return result;
 	}
 
-
-	
-	
 	/**
-	 * Get list of field you search, your search will be set by a envValue, that represent start,finish,cliff or player
+	 * Get list of field you search, your search will be set by a envValue, that
+	 * represent start,finish,cliff or player
+	 * 
 	 * @param envDesriptionValue
 	 * @return
 	 */
-	private List<Position> searchFieldOnEnv(int envDesriptionValue){
-		List<Position> foundList = null;
-		
-		for(int x =0;x< this.envSizeX;x++){
-			for(int y=0; y<this.envSizeY;y++){
-//				envField[x][y];
+	private List<Position> searchFieldOnEnv(int envDesriptionValue) {
+		List<Position> foundList = new ArrayList<Position>();
+
+		for (int x = 0; x < this.envSizeX; x++) {
+			for (int y = 0; y < this.envSizeY; y++) {
+				if (envField[x][y] == envDesriptionValue) {
+					foundList.add(new Position(x, y));
+				}
 			}
 		}
-		
+
 		return foundList;
 	}
 
@@ -251,13 +269,14 @@ public class Environment implements IEnvironment{
 	 */
 	public Position getStartPosition() {
 		Position retpos = null;
-		List<Position> startPos =	searchFieldOnEnv(this.envStartValue);
-		if(    ((!startPos.isEmpty()) & (startPos.size()<2))  ){
-			retpos=startPos.get(0);
-		}else{
-			System.out.println("ERROR startfeld nicht gefunden oder mehrfach gefunden");
+		List<Position> startPos = searchFieldOnEnv(this.envStartValue);
+		if (((!startPos.isEmpty()) & (startPos.size() < 2))) {
+			retpos = startPos.get(0);
+		} else {
+			System.out
+					.println("ERROR startfeld nicht gefunden oder mehrfach gefunden");
 		}
-		
+
 		return retpos;
 	}
 
@@ -268,11 +287,12 @@ public class Environment implements IEnvironment{
 	 */
 	public Position getFinishPosition() {
 		Position retpos = null;
-		List<Position> finishPos =	searchFieldOnEnv(this.envFinishValue);
-		if(    ((!finishPos.isEmpty()) & (finishPos.size()<2))  ){
-			retpos=finishPos.get(0);
-		}else{
-			System.out.println("ERROR finishField nicht gefunden oder mehrfach gefunden");
+		List<Position> finishPos = searchFieldOnEnv(this.envFinishValue);
+		if (((!finishPos.isEmpty()) & (finishPos.size() < 2))) {
+			retpos = finishPos.get(0);
+		} else {
+			System.out
+					.println("ERROR finishField nicht gefunden oder mehrfach gefunden");
 		}
 		return retpos;
 	}
@@ -284,11 +304,13 @@ public class Environment implements IEnvironment{
 	 */
 	public List<Position> getCliffPositions() {
 		List<Position> retposList = null;
-		List<Position> cliffPos =	searchFieldOnEnv(this.envCliffValue);
-		if(    ((!cliffPos.isEmpty()) & (cliffPos.size()<this.envSizeX*this.envSizeY))  ){
-			retposList=cliffPos;
-		}else{
-			System.out.println("ERROR cliff nicht gefunden oder zuviele gefunden");
+		List<Position> cliffPos = searchFieldOnEnv(this.envCliffValue);
+		if (((!cliffPos.isEmpty()) & (cliffPos.size() < this.envSizeX
+				* this.envSizeY))) {
+			retposList = cliffPos;
+		} else {
+			System.out
+					.println("ERROR cliff nicht gefunden oder zuviele gefunden");
 		}
 		return retposList;
 	}
@@ -308,5 +330,10 @@ public class Environment implements IEnvironment{
 	public int getHeigth() {
 		return envSizeY;
 	}
-	
+
+	@Override
+	public boolean isRunnig() {
+			return isRunning;
+	}
+
 }
