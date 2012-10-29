@@ -42,26 +42,6 @@ public class Environment implements IEnvironment {
 		initField();
 	}
 	
-//	/**
-//	 * Fenja ist schuld! -> sowas wünsch ich mir
-//	 * @param height
-//	 * @param width
-//	 * @param start
-//	 * @param end
-//	 * @param cliffList
-//	 */
-//	
-//	private int height, width;
-//	private Position startPos, endPos;
-//	private List<Position> cliffList;
-//	public Environment(int height, int width, Position start, Position end, List<Position> cliffList){
-//		this.height = height;
-//		this.width = width;
-//		this.startPos = start;
-//		this.endPos = end;
-//		this.cliffList = cliffList;
-//	}
-	
 	/**
 	 * Constructor whit default environmentValues and settable
 	 * environmentDimension
