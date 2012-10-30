@@ -1,10 +1,25 @@
 package haw.po.la.cliff;
 
-import static haw.po.la.cliff.Direction.*;
-
 public class Agent {
-    public Position act(Environment env, Position pos) {
-        Pair<Position, Double> posAndReward = env.nextState(pos, LEFT);
-        return pos;
+	
+	private Environment env;
+	private AlgoImpl algo;
+	public Position agentPos;
+	
+	public Agent(Environment env, AlgoImpl algo){
+		this.env = env;
+		this.algo = algo;
+		agentPos = env.getStartPosition();
+	}
+	
+    public Position act() {
+    	Direction dir = Direction.DOWN;//algo.getDirection(agentPos);
+        Pair<Position, Double> posAndReward = env.nextState(agentPos, dir);
+        //algo.learn(agentPos, dir, posAndReward);
+        return posAndReward.first();
+    }
+    
+    public Position getPosition(){
+    	return agentPos;
     }
 }

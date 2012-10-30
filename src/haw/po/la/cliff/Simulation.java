@@ -1,7 +1,21 @@
 package haw.po.la.cliff;
 
 public class Simulation {
+	
+	private GUI gui;
+	private Environment env;
+	private Agent agent;
+	
+	public Simulation(Environment env){
+		this.env = env;
+		this.gui = new GUI(env);
+		//IAlgo algo = new IAlgo();
+		this.agent = new Agent(env, null);
+	}
+	
     public void run() {
+    	Position newPos = agent.act();
+    	gui.render(newPos);
         // do smth and return smth
     }
     

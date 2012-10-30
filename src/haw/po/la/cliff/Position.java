@@ -18,4 +18,10 @@ public class Position {
     public int y() {
         return y;
     }
+    
+    public boolean equals (Position other){
+    	return((this.x() == other.x()) && (this.y() == other.y()));
+    }
+    
+    //contains in Position-List muss noch funktionieren
 }

@@ -9,8 +9,12 @@ package haw.po.la.cliff;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Panel;
+import java.awt.Rectangle;
 import java.applet.Applet;
 import java.util.List;
+
+import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class GUI extends Applet implements IGUI{
@@ -18,15 +22,15 @@ public class GUI extends Applet implements IGUI{
 	private int startx = 30;
 	private int starty = 10;
 	private int fieldSize = 30;
-	private Graphics g;
+	private static Graphics g;
 	private Frame frame;
 	
 
 	//interface environment
-	public int width;// = 8;
-	public int height;// = 3;
-	public Position startField;// = new Position(0,0);
-	public Position endField;// = new Position(width-1,0);
+	public int width;
+	public int height;
+	public Position startField;
+	public Position endField;
 	public List<Position> cliffList;
 	public Position agentPos;
 	
@@ -42,17 +46,25 @@ public class GUI extends Applet implements IGUI{
 		frame.setResizable(true);
 		frame.add(this);
 		frame.pack();
-		frame.setSize(width*fieldSize+(2*startx),height*fieldSize+(2*starty));
-		//init();
+		frame.setSize(400,400);
+		init();
 		frame.setVisible(true);	
 	}
 	
-//	public void init(){
-//		repaint();
-//	}
+	public void init() {	
+//		final Panel panel = new Panel();
+//		Rectangle minBounds = new Rectangle(200, 200);
+//		
+//		panel.setBounds(minBounds);
+//		panel.getAlignmentX();
+//		add(panel);
+//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		g = getGraphics();
+	}
 	
 	public void paint (Graphics g){
 		this.g = g;
+		
 		//Grid
 		g.setColor(Color.black);
 		g.drawLine(startx, starty, startx, starty+height*(fieldSize+1)); //waagerecht
@@ -63,37 +75,49 @@ public class GUI extends Applet implements IGUI{
 		for(int i = 1; i <= width; i++){
 			g.drawLine(startx+((fieldSize+1)*i), starty, startx+((fieldSize+1)*i), starty+height*((fieldSize+1)));
 		}
+		
 		//start & end field
-		g.setColor(Color.lightGray);
-		g.fillRect(startx+((fieldSize+1)*startField.x()+1), starty+((fieldSize+1)*startField.y()+1), fieldSize, fieldSize);
-		g.fillRect(startx+((fieldSize+1)*endField.x()+1), starty+((fieldSize+1)*endField.y()+1), fieldSize, fieldSize);
+		fillField(startField, Color.lightGray);
+		fillField(endField, Color.lightGray);
+		
 		//cliff
 		if(cliffList!=null){
-			g.setColor(Color.black);
 			for(Position p : cliffList){
-				g.fillRect(startx+((fieldSize+1)*p.x()+1), starty+((fieldSize)*p.y()+1), fieldSize, fieldSize);
+				fillField(p,Color.black);
 			}
 		}
+		
 		drawAgent();
 	}
 
 	private void drawAgent(){
-		g.setColor(Color.red);
-		g.fillOval(startx+((fieldSize+1)*(agentPos.x()-1)+1), starty+((fieldSize+1)*(agentPos.y()-1)+1), fieldSize-1, fieldSize-1);
+		if(cliffList != null && cliffList.contains(agentPos)){
+			g.setColor(Color.lightGray);
+		}else{
+			g.setColor(Color.red);
+		}
+		g.fillOval(startx+((fieldSize+1)*agentPos.x()+1), starty+((fieldSize+1)*agentPos.y()+1), fieldSize, fieldSize);
 	}
 	
 	private void drawClear(){
-		if(agentPos == startField){
-			//TODO
-		}else if(agentPos == endField){
-			//TODO
+		Color c;
+		if(agentPos.equals(startField) || agentPos.equals(endField)){
+			c = Color.lightGray;
 		}else if(cliffList.contains(agentPos)){
-			//TODO
+			c = Color.black;
+		}else{
+			c = Color.white;
 		}
+		fillField(agentPos, c);
+	}
+	
+	private void fillField(Position pos, Color c){
+		g.setColor(c);
+		g.fillRect(startx+((fieldSize+1)*pos.x()+1), starty+((fieldSize+1)*pos.y()+1), fieldSize, fieldSize);
 	}
 	
     public void render(Position agentPos) {
-    	if (this.agentPos != agentPos){
+    	if (!this.agentPos.equals(agentPos)){
     		drawClear();
     		this.agentPos = agentPos;
     		drawAgent();
