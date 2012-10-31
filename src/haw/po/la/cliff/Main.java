@@ -18,7 +18,7 @@ public class Main {
 		
 		Simulation sim = new Simulation(env);
 		Thread.sleep(100);//wait for x secs
-		sim.run();
+		sim.step();
 		
 //		System.out.println("CLIFF\n");
 //
