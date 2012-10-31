@@ -9,12 +9,8 @@ package haw.po.la.cliff;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Panel;
-import java.awt.Rectangle;
 import java.applet.Applet;
 import java.util.List;
-
-import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class GUI extends Applet implements IGUI{
@@ -51,19 +47,11 @@ public class GUI extends Applet implements IGUI{
 		frame.setVisible(true);	
 	}
 	
-	public void init() {	
-//		final Panel panel = new Panel();
-//		Rectangle minBounds = new Rectangle(200, 200);
-//		
-//		panel.setBounds(minBounds);
-//		panel.getAlignmentX();
-//		add(panel);
-//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	public void init() {
 		g = getGraphics();
 	}
 	
 	public void paint (Graphics g){
-		this.g = g;
 		
 		//Grid
 		g.setColor(Color.black);
