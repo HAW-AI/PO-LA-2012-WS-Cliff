@@ -17,5 +17,6 @@ public class SimulationImpl implements Simulation {
     public void step() {
     	Position pos = agent.act();
     	gui.render(pos);
+    	System.out.println("Reward: "+agent.getReward());
     }
 }

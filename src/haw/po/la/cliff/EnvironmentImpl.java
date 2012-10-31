@@ -12,7 +12,9 @@ public class EnvironmentImpl implements Environment {
 	private Position startPos,finishPos;
 	private List<Position> cliffList;
 	
-	private double normReward, cliffReward, finishReward;
+	private double normReward = -1.0;
+	private double cliffReward = -10.0;
+	private double finishReward = 20.0;
 	
 	public EnvironmentImpl(int height, int width, Position startField, Position endField, List<Position> cliffList){
 		this.height = height;
@@ -41,7 +43,7 @@ public class EnvironmentImpl implements Environment {
 	
 	public Pair<Position, Double> nextState(Position pos, Direction dir){
 		Position nextPos = pos;
-		System.out.println("before move ("+pos.x()+","+pos.y()+")");
+		//System.out.println("before move ("+pos.x()+","+pos.y()+")");
 		double reward = normReward;
 		switch (dir){
 			case UP: System.out.println("UP");
@@ -57,7 +59,7 @@ public class EnvironmentImpl implements Environment {
 				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
 				break;
 		}
-		System.out.println("after move ("+nextPos.x()+","+nextPos.y()+")");
+		//System.out.println("after move ("+nextPos.x()+","+nextPos.y()+")");
 		if(cliffList.contains(nextPos)){
 			System.out.println("Run into cliff");
 			reward = cliffReward;
