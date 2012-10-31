@@ -1,7 +1,7 @@
 package haw.po.la.cliff;
 
 /**
- * @author Bjoern Kulas
+ * @author Bjoern Kulas, Fenja Harbke
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,25 @@ public class Environment implements IEnvironment {
 	private Position startPos,finishPos;
 	private List<Position> cliffList;
 	
+	private double normReward, cliffReward, finishReward;
+	
 	public Environment(int height, int width, Position startField, Position endField, List<Position> cliffList){
 		this.height = height;
 		this.width = width;
 		this.startPos = startField;
 		this.finishPos = endField;
 		this.cliffList = cliffList;
+	}
+	
+	public Environment(int height, int width){
+		this.height = height;
+		this.width = width;
+		this.startPos = new Position(0,0);
+		this.finishPos = new Position(width-1,0);
+		this.cliffList = new ArrayList<Position>();
+		for(int i = 1; i < width -2; i++){
+			cliffList.add(new Position(i,0));
+		}
 	}
 	
 	public int getHeigth(){	return height;}
@@ -27,13 +40,70 @@ public class Environment implements IEnvironment {
 	public List<Position> getCliffPositions(){ return cliffList;}
 	
 	public Pair<Position, Double> nextState(Position pos, Direction dir){
-		Position newPos = new Position(0,1);
-		
-		return new Pair<Position, Double>(newPos,-1.0);
+		Position nextPos = pos;
+		double reward = normReward;
+		switch (dir){
+			case UP: System.out.println("UP");
+				if(pos.y()-1 >= 0){ nextPos = new Position(pos.x(), pos.y()-1);}
+				break;
+			case DOWN: System.out.println("DOWN");
+				if(pos.y()+1 <= height-1){ nextPos = new Position(pos.x(), pos.y()+1);}
+				break;
+			case LEFT: System.out.println("LEFT");
+				if(pos.x()-1 >=0){ nextPos = new Position(pos.x()-1, pos.y());}
+				break;
+			case RIGHT: System.out.println("RIGHT");
+				if(pos.x()+1 <= width-1){ nextPos = new Position(pos.x()+1, pos.y());}
+				break;
+		}
+		if(cliffList.contains(nextPos)){
+			System.out.println("Run into cliff");
+			reward = cliffReward;
+			nextPos = startPos;
+		}else if (nextPos.equals(finishPos)){
+			System.out.println("Reached finish");
+			reward = finishReward;
+			nextPos = startPos;
+		}
+		return new Pair<Position, Double>(nextPos,reward);
 	}
+	
 	public boolean isRunning(){
 		return true;
 	}
+	// create list, contains possible directions from pos
+//	List<Direction> possibleDir = new ArrayList<Direction>();
+//
+//	// check agentPosition is int he space of environment
+//	if (checkPosInField(pos)) {
+//		this.agentPos = pos;
+//
+//	} else {
+//		System.err
+//				.println("ERROR:Env - nextState - checkPosInField returns false");
+//	}
+//	// } else {
+//	// throw new Exception("pos is out of environment, pos(" + pos.x()
+//	// + " , " + pos.y() + ") not in env(" + this.minX + "..."
+//	// + this.maxX + " , " + this.minY + "..." + this.maxY + ")");
+//	// }
+//
+//	// get all possible directions from agentpos
+//	possibleDir.addAll(getPossibleDirections(this.agentPos));
+//
+//	// check new direction is possible
+//	if (possibleDir.contains(dir)) {
+//		setNewPosAndReward(dir);
+//	} else {
+//		// param NULL to get in default case
+//		setNewPosAndReward(null);
+//
+//	}
+//
+//	Double retVal = (double) (this.rewardValue);
+//
+//	return new Pair<Position, Double>(new Position(this.agentPos.x(),
+//			this.agentPos.y()), retVal);
 
 //	// dim of cliff environment
 //	private int envSizeX;

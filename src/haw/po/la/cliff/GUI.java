@@ -79,17 +79,13 @@ public class GUI extends Applet implements IGUI{
 	}
 
 	private void drawAgent(){
-		if(cliffList != null && cliffList.contains(agentPos)){
-			g.setColor(Color.lightGray);
-		}else{
-			g.setColor(Color.red);
-		}
+		g.setColor(Color.red);
 		g.fillOval(startx+((fieldSize+1)*agentPos.x()+1), starty+((fieldSize+1)*agentPos.y()+1), fieldSize, fieldSize);
 	}
 	
 	private void drawClear(){
 		Color c;
-		if(agentPos.equals(startField) || agentPos.equals(endField)){
+		if(agentPos == startField || agentPos == endField){
 			c = Color.lightGray;
 		}else if(cliffList.contains(agentPos)){
 			c = Color.black;
@@ -105,7 +101,7 @@ public class GUI extends Applet implements IGUI{
 	}
 	
     public void render(Position agentPos) {
-    	if (!this.agentPos.equals(agentPos)){
+    	if (this.agentPos != agentPos){
     		drawClear();
     		this.agentPos = agentPos;
     		drawAgent();

@@ -13,7 +13,7 @@ public class Agent {
 	}
 	
     public Position act() {
-    	Direction dir = Direction.DOWN;//algo.getDirection(agentPos);
+    	Direction dir = Direction.RIGHT;//algo.getDirection(agentPos);
         Pair<Position, Double> posAndReward = env.nextState(agentPos, dir);
         //algo.learn(agentPos, dir, posAndReward);
         return posAndReward.first();

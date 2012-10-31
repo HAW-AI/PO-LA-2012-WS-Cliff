@@ -19,9 +19,24 @@ public class Position {
         return y;
     }
     
-    public boolean equals (Position other){
-    	return((this.x() == other.x()) && (this.y() == other.y()));
-    }
+    public boolean equals(Object obj) {
+    	if (this == obj)
+                return true;
+    	if (obj == null)
+    	    return false;
+    	if (!(obj instanceof Position))
+    	    return false;
+    	Position other = (Position) obj;
+    	    return compareTo(other) == 0;
+        }
     
+    public int compareTo(Position other) {
+    	int xCompare = Integer.valueOf(this.x()).compareTo(Integer.valueOf(other.x()));
+    	int comp;
+    	if( xCompare == 0 ){
+    		comp = Integer.valueOf(this.y()).compareTo(Integer.valueOf(other.y()));
+    	} else { comp = xCompare;}
+    	return comp;
+        }
     //contains in Position-List muss noch funktionieren
 }
