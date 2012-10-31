@@ -1,6 +1,6 @@
 package haw.po.la.cliff;
 
-public class AlgoImpl implements IAlgo{
+public class AlgoImpl implements Algo{
 
 	public AlgoImpl(){}
 	
@@ -12,7 +12,8 @@ public class AlgoImpl implements IAlgo{
 
 	@Override
 	public Direction getDirection(Position pos) {
-		int act = (int)(Math.random()*4);
+		System.out.println("Reached this");
+		int act = (int)(Math.random()*4)+1;
 		Direction dir;
 		switch (act){
 		case 0: dir = Direction.UP; break;

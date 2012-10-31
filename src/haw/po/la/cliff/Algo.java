@@ -1,6 +1,6 @@
 package haw.po.la.cliff;
 
-public interface IAlgo {
+public interface Algo {
 	
 	/**
 	 * Set an initial-pair of position and direction and an result-pair of actual position and got reward

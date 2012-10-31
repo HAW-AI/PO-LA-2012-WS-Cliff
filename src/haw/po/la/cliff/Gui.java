@@ -1,6 +1,6 @@
 package haw.po.la.cliff;
 
-public interface IGUI {
+public interface Gui {
 
 	
 	/**

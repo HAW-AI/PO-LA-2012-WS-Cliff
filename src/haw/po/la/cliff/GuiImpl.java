@@ -13,7 +13,7 @@ import java.applet.Applet;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class GUI extends Applet implements IGUI{
+public class GuiImpl extends Applet implements Gui{
 	
 	private int startx = 30;
 	private int starty = 10;
@@ -30,7 +30,7 @@ public class GUI extends Applet implements IGUI{
 	public List<Position> cliffList;
 	public Position agentPos;
 	
-	public GUI(Environment env){
+	public GuiImpl(EnvironmentImpl env){
 		g = getGraphics();
 		this.startField = env.getStartPosition();
 		this.endField = env.getFinishPosition();
