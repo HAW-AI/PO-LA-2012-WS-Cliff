@@ -17,8 +17,10 @@ public class Main {
 		Environment env = new Environment(3,8,new Position(0,0), new Position(7,0),cliffList);
 		
 		Simulation sim = new Simulation(env);
+		for(int i = 0; i < 10; i++){
 		Thread.sleep(300);//wait for x secs
 		sim.step();
+		}
 		
 //		System.out.println("CLIFF\n");
 //
