@@ -52,6 +52,7 @@ public class GuiImpl extends Applet implements Gui{
 	}
 	
 	public void paint (Graphics g){
+		this.g= g; //Damits bei MAC funzt?
 		
 		//Grid
 		g.setColor(Color.black);
