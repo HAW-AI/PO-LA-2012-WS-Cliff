@@ -18,7 +18,7 @@ public class GuiImpl extends Applet implements Gui{
 	private int startx = 30;
 	private int starty = 10;
 	private int fieldSize = 30;
-	private static Graphics g;
+	private Graphics g;
 	private Frame frame;
 	
 
