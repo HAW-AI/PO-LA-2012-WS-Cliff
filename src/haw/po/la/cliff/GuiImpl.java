@@ -107,5 +107,8 @@ public class GuiImpl extends Applet implements Gui{
     		this.agentPos = agentPos;
     		drawAgent();
     	}
+
+        setVisible(false);
+        setVisible(true);
     }
 }
