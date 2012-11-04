@@ -19,6 +19,10 @@ public class Position {
         return y;
     }
     
+    public String toString() {
+        return "Position(" + x + ", " + y + ")";
+    }
+    
     public boolean equals(Object obj) {
     	if (this == obj)
                 return true;
