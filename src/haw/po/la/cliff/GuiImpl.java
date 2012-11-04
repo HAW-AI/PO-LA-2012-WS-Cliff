@@ -7,7 +7,7 @@ package haw.po.la.cliff;
  */
 
 import java.awt.Color;
-import java.awt.Frame;
+import javax.swing.JFrame;
 import java.awt.Graphics;
 import java.applet.Applet;
 import java.util.List;
@@ -19,7 +19,7 @@ public class GuiImpl extends Applet implements Gui{
 	private int starty = 10;
 	private int fieldSize = 30;
 	private Graphics g;
-	private Frame frame;
+	private JFrame frame;
 	
 
 	//interface environment
@@ -38,7 +38,8 @@ public class GuiImpl extends Applet implements Gui{
 		this.width = env.getWidth();
 		this.height = env.getHeigth();
 		this.agentPos = startField;
-		frame = new Frame();
+		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
 		frame.add(this);
 		frame.pack();
