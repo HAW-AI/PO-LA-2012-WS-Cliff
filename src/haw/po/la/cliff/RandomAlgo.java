@@ -1,8 +1,10 @@
 package haw.po.la.cliff;
 
-public class AlgoImpl implements Algo{
+import java.util.Map;
 
-	public AlgoImpl(){}
+public class RandomAlgo implements Algo{
+	
+	public RandomAlgo(){}
 	
 	@Override
 	public void learn(Position initialPos, Direction dir, Pair<Position, Double> result) {

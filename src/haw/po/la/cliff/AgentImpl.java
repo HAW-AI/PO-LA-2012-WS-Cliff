@@ -1,5 +1,7 @@
 package haw.po.la.cliff;
 
+import java.util.Map;
+
 public class AgentImpl {
 	
 	private EnvironmentImpl env;
