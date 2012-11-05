@@ -43,7 +43,7 @@ public class EnvironmentImpl implements Environment {
 	
 	public Pair<Position, Double> nextState(Position pos, Direction dir){
 		Position nextPos = pos;
-		//System.out.println("before move ("+pos.x()+","+pos.y()+")");
+		
 		double reward = normReward;
 		switch (dir){
 			case UP: //System.out.println("UP");
@@ -59,17 +59,19 @@ public class EnvironmentImpl implements Environment {
 				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
 				break;
 		}
-		//System.out.println("after move ("+nextPos.x()+","+nextPos.y()+")");
+		
 		if(cliffList.contains(nextPos)){
 			System.out.println("Run into cliff");
 			reward = cliffReward;
 			nextPos = startPos;
 		}else if (nextPos.equals(finishPos)){
-			System.out.println("Reached finish");
 			reward = finishReward;
 			nextPos = startPos;
 			System.out.println("REACHED GOAL!!!");
 		}
+		
+		//System.out.println("("+pos.x()+","+pos.y()+") -"+dir+"-> ("+nextPos.x()+","+nextPos.y()+") Reward: "+reward);
+		
 		return new Pair<Position, Double>(nextPos,reward);
 	}
 	

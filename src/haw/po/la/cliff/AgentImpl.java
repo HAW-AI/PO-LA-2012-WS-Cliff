@@ -17,7 +17,7 @@ public class AgentImpl {
         Pair<Position, Double> posAndReward = env.nextState(agentPos, dir);
         agentPos = posAndReward.first();
         algo.learn(agentPos, dir, posAndReward.first(), posAndReward.second());
-        System.out.println(algo);
+        //System.out.println(algo);
         return posAndReward.first();
     }
     
