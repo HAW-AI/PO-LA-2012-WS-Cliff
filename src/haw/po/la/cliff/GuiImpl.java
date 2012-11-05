@@ -6,6 +6,7 @@ package haw.po.la.cliff;
  *
  */
 
+import java.awt.Canvas;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Graphics;
@@ -13,7 +14,7 @@ import java.applet.Applet;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class GuiImpl extends Applet implements Gui{
+public class GuiImpl extends Canvas implements Gui{
 	
 	private int startx = 30;
 	private int starty = 10;
@@ -53,7 +54,7 @@ public class GuiImpl extends Applet implements Gui{
 	}
 	
 	public void paint (Graphics g){
-		this.g= g; //Damits bei MAC funzt?
+		//this.g= g; //Damits bei MAC funzt?
 		
 		//Grid
 		g.setColor(Color.black);
@@ -109,7 +110,7 @@ public class GuiImpl extends Applet implements Gui{
     		drawAgent();
     	}
 
-        setVisible(false);
-        setVisible(true);
+//        setVisible(false);
+//        setVisible(true);
     }
 }
