@@ -13,7 +13,7 @@ public class AlgoImpl implements Algo{
 	@Override
 	public Direction getDirection(Position pos) {
 		System.out.println("Reached this");
-		int act = (int)(Math.random()*4)+1;
+		int act = (int)(Math.random()*4);
 		Direction dir;
 		switch (act){
 		case 0: dir = Direction.UP; break;
