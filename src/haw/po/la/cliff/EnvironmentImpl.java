@@ -46,16 +46,16 @@ public class EnvironmentImpl implements Environment {
 		//System.out.println("before move ("+pos.x()+","+pos.y()+")");
 		double reward = normReward;
 		switch (dir){
-			case UP: System.out.println("UP");
+			case UP: //System.out.println("UP");
 				if(pos.y()-1 >= 0){ nextPos = new Position(pos.x(), pos.y()-1);}
 				break;
-			case DOWN: System.out.println("DOWN");
+			case DOWN: //System.out.println("DOWN");
 				if(pos.y()+1 < height){ nextPos = new Position(pos.x(), pos.y()+1);}
 				break;
-			case LEFT: System.out.println("LEFT");
+			case LEFT: //System.out.println("LEFT");
 				if(pos.x()-1 >=0){ nextPos = new Position(pos.x()-1, pos.y());}
 				break;
-			case RIGHT: System.out.println("RIGHT");
+			case RIGHT: //System.out.println("RIGHT");
 				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
 				break;
 		}
