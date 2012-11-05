@@ -9,7 +9,7 @@ public class SimulationImpl implements Simulation {
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
 		this.gui = new GuiImpl(env);
-		Algo algo = new RandomAlgo();
+		Algo algo = new AlgoImpl();
 		this.agent = new AgentImpl(env, algo);
 	}
     

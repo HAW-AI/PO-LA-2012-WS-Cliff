@@ -10,7 +10,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Graphics;
-import java.applet.Applet;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -54,7 +53,7 @@ public class GuiImpl extends Canvas implements Gui{
 	}
 	
 	public void paint (Graphics g){
-		this.g= g; //Damits bei MAC funzt?
+		//this.g= g; //MAC
 		
 		//Grid
 		g.setColor(Color.black);
@@ -110,7 +109,7 @@ public class GuiImpl extends Canvas implements Gui{
     		drawAgent();
     	}
 
-        setVisible(false);
-        setVisible(true);
+//        setVisible(false); //MAC
+//        setVisible(true); //MAC
     }
 }

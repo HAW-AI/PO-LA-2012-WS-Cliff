@@ -30,7 +30,7 @@ public class EnvironmentImpl implements Environment {
 		this.startPos = new Position(0,0);
 		this.finishPos = new Position(width-1,0);
 		this.cliffList = new ArrayList<Position>();
-		for(int i = 1; i < width -2; i++){
+		for(int i = 1; i < width -1; i++){
 			cliffList.add(new Position(i,0));
 		}
 	}
@@ -68,6 +68,7 @@ public class EnvironmentImpl implements Environment {
 			System.out.println("Reached finish");
 			reward = finishReward;
 			nextPos = startPos;
+			System.out.println("REACHED GOAL!!!");
 		}
 		return new Pair<Position, Double>(nextPos,reward);
 	}
