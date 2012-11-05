@@ -16,4 +16,5 @@ public interface Algo {
 	 * @return the best direction to addiction of parameter Position 
 	 */
 	public Direction getDirection(Position pos);
+	
 }

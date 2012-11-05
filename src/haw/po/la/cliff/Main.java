@@ -17,7 +17,7 @@ public class Main {
 		EnvironmentImpl env = new EnvironmentImpl(3,8,new Position(0,0), new Position(7,0),cliffList);
 		
 		SimulationImpl sim = new SimulationImpl(env);
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 100; i++){
 		Thread.sleep(300);//wait for x secs
 		sim.step();
 		}

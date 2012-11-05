@@ -9,7 +9,7 @@ public class SimulationImpl implements Simulation {
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
 		this.gui = new GuiImpl(env);
-		Algo algo = new AlgoImpl();
+		Algo algo = new RandomAlgo();
 		this.agent = new AgentImpl(env, algo);
 	}
     
@@ -17,6 +17,5 @@ public class SimulationImpl implements Simulation {
     public void step() {
     	Position pos = agent.act();
     	gui.render(pos);
-    	System.out.println("Reward: "+agent.getReward());
     }
 }
