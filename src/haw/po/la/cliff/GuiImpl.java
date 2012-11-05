@@ -53,7 +53,7 @@ public class GuiImpl extends Canvas implements Gui{
 	}
 	
 	public void paint (Graphics g){
-		//this.g= g; //MAC
+		this.g = g; //MAC
 		
 		//Grid
 		g.setColor(Color.black);
@@ -109,7 +109,7 @@ public class GuiImpl extends Canvas implements Gui{
     		drawAgent();
     	}
 
-//        setVisible(false); //MAC
-//        setVisible(true); //MAC
+        setVisible(false); //MAC
+        setVisible(true); //MAC
     }
 }
