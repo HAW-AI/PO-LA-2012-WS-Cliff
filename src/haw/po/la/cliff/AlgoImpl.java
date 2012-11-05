@@ -1,9 +1,22 @@
 package haw.po.la.cliff;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class AlgoImpl extends ReinforcementAlgo{
+public class AlgoImpl implements Algo{
 
+	protected Map<Pair<Position,Direction>, Double> brain;
+	
+	@Override
+	public String toString(){
+		String str = "Brain:\n";
+		
+		for (Map.Entry<Pair<Position, Direction>, Double> entry : brain.entrySet()) {
+			str += entry.getKey() + " => " + entry.getValue() + "\n";
+		}
+		
+		return str;
+	}
 	
 	public AlgoImpl(){
 		this.brain = new HashMap <Pair<Position,Direction>, Double>();
