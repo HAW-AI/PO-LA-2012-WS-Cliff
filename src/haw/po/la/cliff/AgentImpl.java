@@ -16,7 +16,7 @@ public class AgentImpl {
     	Direction dir = algo.getDirection(agentPos);
         Pair<Position, Double> posAndReward = env.nextState(agentPos, dir);
         agentPos = posAndReward.first();
-        algo.learn(agentPos, dir, posAndReward);
+        algo.learn(agentPos, dir, posAndReward.first(), posAndReward.second());
         System.out.println(algo);
         return posAndReward.first();
     }

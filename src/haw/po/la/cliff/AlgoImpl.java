@@ -23,13 +23,12 @@ public class AlgoImpl implements Algo{
 	}
 	
 	@Override
-	public void learn(Position initialPos, Direction dir,
-			Pair<Position, Double> result) {
+	public void learn(Position initialPos, Direction dir, Position resultingPos, Double reward) {
 		Pair<Position, Direction> key = new Pair<Position, Direction>(initialPos, dir);
 		if(brain.containsKey(key)){
-			brain.put(key, (brain.get(key) + result.second())/2);
+			brain.put(key, (brain.get(key) + reward)/2);
 		}else{
-			brain.put(key,result.second());
+			brain.put(key, reward);
 		}
 	}
 

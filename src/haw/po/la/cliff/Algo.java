@@ -2,12 +2,14 @@ package haw.po.la.cliff;
 
 public interface Algo {
 	
-	/**
-	 * Set an initial-pair of position and direction and an result-pair of actual position and got reward
-	 * @param initial the pair which the agent use by environment
-	 * @param result the pair of result got by environment
-	 */
-	public void learn(Position initialPos, Direction dir, Pair<Position, Double> result);
+    /**
+     * Learn from a state and action combination and the resulting position and reward.
+     * @param initialPos   initial position (state)
+     * @param dir          direction (action) taken
+     * @param resultingPos resulting position (state)
+     * @param reward       reward from carrying out the action
+     */
+	public void learn(Position initialPos, Direction dir, Position resultingPos, Double reward);
 		
 	
 	/**
