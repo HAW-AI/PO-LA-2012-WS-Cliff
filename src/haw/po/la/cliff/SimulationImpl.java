@@ -5,6 +5,7 @@ public class SimulationImpl implements Simulation {
 	private GuiImpl gui;
 	private EnvironmentImpl env;
 	private AgentImpl agent;
+	private Algo algo;
 	
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
