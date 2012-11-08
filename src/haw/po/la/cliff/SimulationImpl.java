@@ -6,17 +6,17 @@ public class SimulationImpl implements Simulation {
 	private EnvironmentImpl env;
 	private AgentImpl agent;
 	private Algo algo;
-	
+
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
 		this.gui = new GuiImpl(env);
-		this.algo = new SarsaAlgo();
+		Algo algo = new ValueIterationAlgo(env);
 		this.agent = new AgentImpl(env, algo);
 	}
     
     @Override
     public void step() {
-    	Position pos = agent.act();
-    	gui.render(pos);
+     Position pos = agent.act();
+     gui.render(pos);
     }
 }
