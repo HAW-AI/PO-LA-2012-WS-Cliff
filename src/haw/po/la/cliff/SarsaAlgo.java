@@ -32,6 +32,7 @@ public class SarsaAlgo implements Algo{
 	
 	@Override
 	public void learn(Position initialPos, Direction dir,Position resultingPos, Double reward) {
+		//TODO: attention, wenn final position like finish or cliff
 		double nextReward = Double.MIN_VALUE;
 		for(Direction d : Direction.values()){
 			if(brain.containsKey(new Pair<Position, Direction>(resultingPos,d))){

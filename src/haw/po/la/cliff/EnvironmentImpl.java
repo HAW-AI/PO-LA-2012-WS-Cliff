@@ -61,13 +61,13 @@ public class EnvironmentImpl implements Environment {
 		}
 		
 		if(cliffList.contains(nextPos)){
-			System.out.println("Run into cliff");
+			//System.out.println("Run into cliff");
 			reward = cliffReward;
 			nextPos = startPos;
 		}else if (nextPos.equals(finishPos)){
 			reward = finishReward;
 			nextPos = startPos;
-			System.out.println("REACHED GOAL!!!");
+			//System.out.println("REACHED GOAL!!!");
 		}
 		
 		//System.out.println("("+pos.x()+","+pos.y()+") -"+dir+"-> ("+nextPos.x()+","+nextPos.y()+") Reward: "+reward);

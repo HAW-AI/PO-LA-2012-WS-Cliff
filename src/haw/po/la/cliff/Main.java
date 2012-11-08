@@ -18,8 +18,8 @@ public class Main {
 		EnvironmentImpl env = new EnvironmentImpl(3,5);
 		
 		SimulationImpl sim = new SimulationImpl(env);
-		for(int i = 0; i < 500; i++){
-		Thread.sleep(50);//wait for x secs
+		for(int i = 0; i < 10000; i++){
+		Thread.sleep(5);//wait for x secs
 		sim.step();
 		}
 	}
