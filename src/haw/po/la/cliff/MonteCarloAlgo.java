@@ -161,9 +161,11 @@ public class MonteCarloAlgo implements Algo {
 	}
 
 	/**
-	 * get average value of all values are in parameter arrayList 
-	 * @param arrayList an arrayList contains value of type double 
-	 * @return an average value of all values are in parameter arrayList 
+	 * get average value of all values are in parameter arrayList
+	 * 
+	 * @param arrayList
+	 *            an arrayList contains value of type double
+	 * @return an average value of all values are in parameter arrayList
 	 */
 	private double getAvg(ArrayList<Double> arrayList) {
 		double avg = 0.0;
