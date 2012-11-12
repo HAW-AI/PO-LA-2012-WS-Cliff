@@ -15,8 +15,8 @@ public class AgentImpl implements Agent {
     public Position act() {
     	Direction dir = algo.getDirection(agentPos);
         Pair<Position, Double> posAndReward = env.nextState(agentPos, dir);
-        agentPos = posAndReward.first();
         algo.learn(agentPos, dir, posAndReward.first(), posAndReward.second());
+        agentPos = posAndReward.first();
         //System.out.println(algo);
         return posAndReward.first();
     }
