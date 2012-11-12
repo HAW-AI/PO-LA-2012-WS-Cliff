@@ -38,15 +38,16 @@ public class SarsaAlgo implements Algo{
 	@Override
 	public void learn(Position initialPos, Direction dir,Position resultingPos, Double reward) {
 		//idea: hold list with steps = episode
-		episode.add(new Pair(new Pair(initialPos, dir), reward));
+		episode.add(new Pair<Pair<Position, Direction>, Double>(new Pair<Position, Direction>(initialPos, dir), reward));
 		
-		if(resultingPos == startPos){
+		if(resultingPos.equals(startPos)){
+			System.out.println("Episode!");
 			//start new episode
-			episode.add(new Pair(new Pair(resultingPos,null),null));
+			episode.add(new Pair<Pair<Position, Direction>, Double>(new Pair<Position, Direction>(resultingPos,null),null));
 			learnEpisode();
 			
 			episode.clear();
-		}//else: add to running episode
+		}
 	}
 			
 	private void learnEpisode(){	
@@ -60,23 +61,7 @@ public class SarsaAlgo implements Algo{
 			}
 		}
 		brain.put(episode.get(episode.size()-2).first(), episode.get(episode.size()-2).second()); //last step to goal/cliff
-		
-//		double nextReward = Double.MIN_VALUE;
-//		for(Direction d : Direction.values()){
-//			if(brain.containsKey(new Pair<Position, Direction>(resultingPos,d))){
-//				nextReward = Math.max(brain.get(new Pair<Position, Direction>(resultingPos,d)), nextReward);
-//			}else{
-//				brain.put(new Pair<Position,Direction>(resultingPos,d),-1.0);
-//			}
-//		}
-//		if(nextReward == Double.MIN_VALUE){ nextReward = -1.0;}
-//		
-//		Pair<Position, Direction> key = new Pair<Position, Direction>(initialPos, dir);
-//		if(brain.containsKey(key)){
-//			brain.put(key, (double)Math.round((brain.get(key) + alpha * (reward + 0.8 * nextReward - brain.get(key)))*10)/10 );
-//		}else{
-//			brain.put(key, reward);
-//		}
+		System.out.println(this);
 		
 	}
 
