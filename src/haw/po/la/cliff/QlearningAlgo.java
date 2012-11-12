@@ -81,4 +81,16 @@ public class QlearningAlgo implements Algo {
 		return dir;
 	}
 
+	@Override
+	public void startEpisode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endEpisode() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
