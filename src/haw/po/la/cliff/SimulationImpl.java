@@ -15,13 +15,6 @@ public class SimulationImpl implements Simulation {
 		this.algo = new ValueIterationAlgo(env);
 		this.agent = new AgentImpl(env, algo);
 		this.isRunning = false;
-		System.out.println(algo);
-
-        System.out.println("start: " + env.getStartPosition());
-        System.out.println("finish: " + env.getFinishPosition());
-		for (Position pos : env.getCliffPositions()) {
-	        System.out.println("cliff: " + pos);
-		}
 	}
     
     @Override
@@ -30,10 +23,8 @@ public class SimulationImpl implements Simulation {
             startEpisode();
         }
 
-        System.out.println("before act: " + position);
         position = agent.act();
         gui.render(position);
-        System.out.println("after act: " + position);
 
         if (shouldEndEpisode()) {
             endEpisode();
@@ -45,10 +36,6 @@ public class SimulationImpl implements Simulation {
     }
     
     private boolean shouldEndEpisode() {
-        System.out.println("  position: " + position);
-        System.out.println("  isRunning: " + isRunning());
-        System.out.println("  is finish: " + env.getFinishPosition().equals(position));
-        System.out.println("  is cliff: " + env.getCliffPositions().contains(position));
         return isRunning() && env.isGameEndingPosition(position);
     }
     
@@ -57,13 +44,11 @@ public class SimulationImpl implements Simulation {
         position = env.getStartPosition();
         algo.startEpisode();
         isRunning = true;
-        System.out.println("start episode");
     }
     
     private void endEpisode() {
         algo.endEpisode();
         isRunning = false;
-        System.out.println("end episode");
     }
     
     public boolean isRunning() {
