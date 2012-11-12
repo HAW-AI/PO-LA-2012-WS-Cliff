@@ -22,12 +22,11 @@ public class MonteCarloAlgo implements Algo {
 	private double epsilon;
 
 	/*
-	 * x,y 	-> Pos
-	 * a	-> action
+	 * x,y -> Pos a -> action
 	 */
-	private double[][][] q;//[x][y][a]
-	private ArrayList<Double>[][][] returns;//[x][y][a]
-	private double[][][] policy;//[x][y][a]
+	private double[][][] q;// [x][y][a]
+	private ArrayList<Double>[][][] returns;// [x][y][a]
+	private double[][][] policy;// [x][y][a]
 
 	private double explore;
 	private double exploit;
@@ -44,26 +43,28 @@ public class MonteCarloAlgo implements Algo {
 		this(0.1, env);
 	}
 
-	
-	
 	public MonteCarloAlgo(double epsilon, Environment env) {
 		this.epsilon = epsilon;
 		this.env = env;
 		this.explore = this.epsilon / Direction.values().length;
-		this.exploit = (1 - this.epsilon)+ (this.epsilon / Direction.values().length);
+		this.exploit = (1 - this.epsilon)
+				+ (this.epsilon / Direction.values().length);
 
 		initArrays();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	/**
 	 * create and initialize the arrays: q, returns and policy
 	 */
 	private void initArrays() {
-		this.q = new double[this.env.getWidth()][this.env.getHeigth()][Direction.values().length];
-		this.returns = new ArrayList[this.env.getWidth()][this.env.getHeigth()][Direction.values().length];
-		this.policy = new double[this.env.getWidth()][this.env.getHeigth()][Direction.values().length];
-		
+		this.q = new double[this.env.getWidth()][this.env.getHeigth()][Direction
+				.values().length];
+		this.returns = new ArrayList[this.env.getWidth()][this.env.getHeigth()][Direction
+				.values().length];
+		this.policy = new double[this.env.getWidth()][this.env.getHeigth()][Direction
+				.values().length];
+
 		for (int w = 0; w <= this.env.getWidth(); w++) {
 			for (int h = 0; h <= this.env.getHeigth(); h++) {
 				for (int a = 0; a < Direction.values().length; a++) {
@@ -94,8 +95,10 @@ public class MonteCarloAlgo implements Algo {
 	}
 
 	@Override
-	public void learn(Position initialPos, Direction dir,Position resultingPos, Double reward) {
-		Pair<Position, Direction> firstPair = new Pair<Position, Direction>(initialPos, dir);
+	public void learn(Position initialPos, Direction dir,
+			Position resultingPos, Double reward) {
+		Pair<Position, Direction> firstPair = new Pair<Position, Direction>(
+				initialPos, dir);
 		int indexOfOptimusA = 0;
 		double bestEvaluation = 0.0;
 
@@ -104,16 +107,24 @@ public class MonteCarloAlgo implements Algo {
 		if (!this.pairList.contains(firstPair)) {
 			this.pairList.add(firstPair);
 			// Append r to returns(s,a)
-			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()].add(reward);
+			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]
+					.add(reward);
 			// set Q(s,a) <-- avg returns(s,a)
-			this.q[initialPos.x()][initialPos.y()][dir.ordinal()] = getAvg(this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]);
+			this.q[initialPos.x()][initialPos.y()][dir.ordinal()] = getAvg(this.returns[initialPos
+					.x()][initialPos.y()][dir.ordinal()]);
 
 		}
 
 		// for each s in the episode
-		double[] actionEvaluations = this.q[initialPos.x()][initialPos.y()];// save action evaluations of q(s,a)
-		
-		bestEvaluation = actionEvaluations[indexOfOptimusA]; // set startValue: bestEvaluation = 0
+		double[] actionEvaluations = this.q[initialPos.x()][initialPos.y()];// save
+																			// action
+																			// evaluations
+																			// of
+																			// q(s,a)
+
+		bestEvaluation = actionEvaluations[indexOfOptimusA]; // set startValue:
+																// bestEvaluation
+																// = 0
 		// check each action evaluation of q(s,a) and save best rated action
 		for (int i = 0; i < actionEvaluations.length; i++) {
 			if (actionEvaluations[i] > bestEvaluation) {
@@ -122,34 +133,46 @@ public class MonteCarloAlgo implements Algo {
 			}
 		}
 
-		// update policy of all actions of s by explore, 
+		// update policy of all actions of s by explore,
 		// policy(s,a) <- epsilon/A(s), if a!=a*
 		for (int a = 0; a < this.policy[initialPos.x()][initialPos.y()].length; a++) {
 			this.policy[initialPos.x()][initialPos.y()][a] = this.explore;
 		}
-		// update policy of best evaluated action of s, 
+		// update policy of best evaluated action of s,
 		// policy(s,a) <- 1-epsilon+epsilon/A(s), if a==a*
 		this.policy[initialPos.x()][initialPos.y()][indexOfOptimusA] = this.exploit;
 	}
 
 	@Override
 	public Direction getDirection(Position pos) {
-		int enumIndex = 0;
+		Direction returnDir;
+		int exploitEnumIndex = 0;
+		int explorerEnumIndex=0;
 		boolean containsExploit = false;
-		//check policy contains exploit
+		// check policy contains exploit
 		for (int i = 0; i < this.policy[pos.x()][pos.y()].length; i++) {
 			if (this.policy[pos.x()][pos.y()][i] == this.exploit) {
 				containsExploit = true;
-				enumIndex = i;
+				exploitEnumIndex = i;
 				i = this.policy[pos.x()][pos.y()].length;
-			} 
+			}
 		}
-		
-		if (!containsExploit) {
-			enumIndex = (int) (Math.random() * 4);
+		// if policy contains exploit then choose exploit by probability 90% 
+		if (containsExploit) {
+			if ((int) (Math.random() * 100) < 90) {//if policy contains exploit  use exploit to 90 %
+				returnDir = Direction.values()[exploitEnumIndex];
+			} else {
+				do{
+					explorerEnumIndex = (int) (Math.random() * 4);//and 10% use an explore action
+				}while(exploitEnumIndex==explorerEnumIndex);
+				returnDir = Direction.values()[explorerEnumIndex];
+			}
+		} else {
+			exploitEnumIndex = (int) (Math.random() * 4);// if policy don't contains an exploit, then random action choice
+			returnDir = Direction.values()[exploitEnumIndex];
 		}
-		
-		return Direction.values()[enumIndex];
+
+		return returnDir;
 	}
 
 	/**
