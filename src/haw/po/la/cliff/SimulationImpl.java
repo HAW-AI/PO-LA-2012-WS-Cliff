@@ -12,7 +12,8 @@ public class SimulationImpl implements Simulation {
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
 		this.gui = new GuiImpl(env);
-		this.algo = new ValueIterationAlgo(env);
+//		this.algo = new ValueIterationAlgo(env);
+		this.algo = new MonteCarloAlgo(env);
 		this.agent = new AgentImpl(env, algo);
 		this.isRunning = false;
 	}

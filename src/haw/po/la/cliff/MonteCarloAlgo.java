@@ -1,6 +1,8 @@
 package haw.po.la.cliff;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -32,6 +34,9 @@ public class MonteCarloAlgo implements Algo {
 	private double exploit;
 
 	private ArrayList<Pair<Position, Direction>> pairList;
+	private List<Position> statelist;
+	private int episodeCounter;
+	private int count;
 
 	/**
 	 * default epsilon = 0.1
@@ -40,7 +45,7 @@ public class MonteCarloAlgo implements Algo {
 	 *            Environment
 	 */
 	public MonteCarloAlgo(Environment env) {
-		this(0.1, env);
+		this(0.4, env);
 	}
 
 	public MonteCarloAlgo(double epsilon, Environment env) {
@@ -65,8 +70,8 @@ public class MonteCarloAlgo implements Algo {
 		this.policy = new double[this.env.getWidth()][this.env.getHeigth()][Direction
 				.values().length];
 
-		for (int w = 0; w <= this.env.getWidth(); w++) {
-			for (int h = 0; h <= this.env.getHeigth(); h++) {
+		for (int w = 0; w < this.env.getWidth(); w++) {
+			for (int h = 0; h < this.env.getHeigth(); h++) {
 				for (int a = 0; a < Direction.values().length; a++) {
 					q[w][h][a] = 0.0;// arbitrary value = 0.0
 					returns[w][h][a] = new ArrayList<Double>();// empty list
@@ -83,72 +88,115 @@ public class MonteCarloAlgo implements Algo {
 	/**
 	 * use this method before a new episode is starting
 	 */
-	public void startEpsiode() {
+	@Override
+	public void startEpisode() {
 		this.pairList = new ArrayList<Pair<Position, Direction>>();
+		this.statelist = new ArrayList<Position>();
 	}
 
 	/**
 	 * use this method to declare the end of an episode
 	 */
-	public void endEpisode() {
-		this.pairList = null;
-	}
-
 	@Override
-	public void learn(Position initialPos, Direction dir,
-			Position resultingPos, Double reward) {
-		Pair<Position, Direction> firstPair = new Pair<Position, Direction>(
-				initialPos, dir);
-		int indexOfOptimusA = 0;
-		double bestEvaluation = 0.0;
+	public void endEpisode() {
+		
+		this.episodeCounter++;
+		
+		System.out.println("EPSIODE: "+this.episodeCounter+" ended");
+		int indexOfOptimusA =10;
+		double[] sortedActionEvaluation =new double[4];
 
-		// for each pair (s,a) in episode
-		// first occurrence
-		if (!this.pairList.contains(firstPair)) {
-			this.pairList.add(firstPair);
-			// Append r to returns(s,a)
-			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]
-					.add(reward);
-			// set Q(s,a) <-- avg returns(s,a)
+		
+		for (int i = 0; i < this.pairList.size(); i++) {
+
+			Position initialPos = new Position(this.pairList.get(i).first().x(), this.pairList.get(i).first().y());
+			Direction dir = this.pairList.get(i).second();
+			
+			// /fuer C) for each state s in the episode
+			if (!this.statelist.contains(initialPos)) {
+				this.statelist.add(initialPos);
+			}
+
+			// B) set Q(s,a) <-- avg returns(s,a)
 			this.q[initialPos.x()][initialPos.y()][dir.ordinal()] = getAvg(this.returns[initialPos
 					.x()][initialPos.y()][dir.ordinal()]);
 
 		}
 
-		// for each s in the episode
-		double[] actionEvaluations = this.q[initialPos.x()][initialPos.y()];// save
-																			// action
-																			// evaluations
-																			// of
-																			// q(s,a)
+		// C) for each state in episode:
+		for (int i = 0; i < this.statelist.size(); i++) {
 
-		bestEvaluation = actionEvaluations[indexOfOptimusA]; // set startValue:
-																// bestEvaluation
-																// = 0
-		// check each action evaluation of q(s,a) and save best rated action
-		for (int i = 0; i < actionEvaluations.length; i++) {
-			if (actionEvaluations[i] > bestEvaluation) {
-				// set index of action a*
-				indexOfOptimusA = i;
+			// for each s in the episode
+			// save  action  evaluations  of  q(s,a)
+			double[] actionEvaluations = this.q[this.statelist.get(i).x()][this.statelist.get(i).y()];
+
+			
+
+			sortedActionEvaluation = actionEvaluations.clone(); 
+
+			Arrays.sort(sortedActionEvaluation);
+			double highestEva=sortedActionEvaluation[3];
+			
+			// check each action evaluation of q(s,a) and save best rated action
+			for (int j = 0; j < actionEvaluations.length; j++) {
+				if (actionEvaluations[j] == highestEva) {
+					// set index of best action a*
+					indexOfOptimusA = j;
+					j=actionEvaluations.length;
+				}
+					
 			}
+			
+		
+
+			// update policy of all actions of s by explore,
+			// policy(s,a) <- epsilon/A(s), if a!=a*
+			for (int a = 0; a < this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()].length; a++) {
+				this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][a] = this.explore;
+			}
+			// update policy of best evaluated action of s,
+			// policy(s,a) <- 1-epsilon+epsilon/A(s), if a==a*
+			this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][indexOfOptimusA] = this.exploit;
+
 		}
 
-		// update policy of all actions of s by explore,
-		// policy(s,a) <- epsilon/A(s), if a!=a*
-		for (int a = 0; a < this.policy[initialPos.x()][initialPos.y()].length; a++) {
-			this.policy[initialPos.x()][initialPos.y()][a] = this.explore;
+		this.pairList = null;
+		this.statelist=null;
+	try {
+		Thread.sleep(500);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+
+	@Override
+	public void learn(Position initialPos, Direction dir, Position resultingPos, Double reward) {
+		Pair<Position, Direction> firstPair = new Pair<Position, Direction>(initialPos, dir);
+		// for each pair (s,a) in episode
+		// first occurrence
+		if (!this.pairList.contains(firstPair)) {
+			this.pairList.add(firstPair);
+			// Append r to returns(s,a)
+			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()].add(reward);
+			System.out.println("\t\t\tREWARD: "+reward);
 		}
-		// update policy of best evaluated action of s,
-		// policy(s,a) <- 1-epsilon+epsilon/A(s), if a==a*
-		this.policy[initialPos.x()][initialPos.y()][indexOfOptimusA] = this.exploit;
 	}
 
 	@Override
 	public Direction getDirection(Position pos) {
+		
+		this.count++;
+		System.out.println("\t\t\t\t"+this.episodeCounter+"\t\t\t"+this.count);
+		
 		Direction returnDir;
 		int exploitEnumIndex = 0;
-		int explorerEnumIndex=0;
+		int explorerEnumIndex = 0;
 		boolean containsExploit = false;
+		
+		
+		
+		
 		// check policy contains exploit
 		for (int i = 0; i < this.policy[pos.x()][pos.y()].length; i++) {
 			if (this.policy[pos.x()][pos.y()][i] == this.exploit) {
@@ -157,19 +205,26 @@ public class MonteCarloAlgo implements Algo {
 				i = this.policy[pos.x()][pos.y()].length;
 			}
 		}
-		// if policy contains exploit then choose exploit by probability 90% 
+		// if policy contains exploit then choose exploit by probability 90%
 		if (containsExploit) {
-			if ((int) (Math.random() * 100) < 90) {//if policy contains exploit  use exploit to 90 %
+			if ((int) (Math.random() * 11) < 9) {// if policy contains exploit
+													// use exploit to 90 %
 				returnDir = Direction.values()[exploitEnumIndex];
+				System.out.println("\tDIR 	90	Exploit"+ returnDir);
 			} else {
-				do{
-					explorerEnumIndex = (int) (Math.random() * 4);//and 10% use an explore action
-				}while(exploitEnumIndex==explorerEnumIndex);
+				
+				do {
+					// and 10% use  an explore action
+					explorerEnumIndex = (int) (Math.random() * 4);
+				} while (exploitEnumIndex == explorerEnumIndex);
 				returnDir = Direction.values()[explorerEnumIndex];
+				System.out.println("\tDIR 	10	Explore"+ returnDir);
 			}
 		} else {
-			exploitEnumIndex = (int) (Math.random() * 4);// if policy don't contains an exploit, then random choice
-			returnDir = Direction.values()[exploitEnumIndex];
+			// if policy don't contains an  exploit, then random choice
+			explorerEnumIndex = (int) (Math.random() * 4);
+			returnDir = Direction.values()[explorerEnumIndex];
+			System.out.println("\tDIR 	Random"+ returnDir);
 		}
 
 		return returnDir;
@@ -185,12 +240,10 @@ public class MonteCarloAlgo implements Algo {
 	private double getAvg(ArrayList<Double> arrayList) {
 		double avg = 0.0;
 		int counter = 0;
-
-		while (arrayList.iterator().hasNext()) {
-			if (arrayList.iterator().next() != null) {
-				counter++;
-				avg += arrayList.iterator().next();
-			}
+		
+		for (Double double1 : arrayList) {
+			avg +=	double1;
+			counter++;
 		}
 
 		avg = avg / counter;
