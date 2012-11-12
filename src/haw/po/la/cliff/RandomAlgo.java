@@ -14,6 +14,18 @@ public class RandomAlgo implements Algo{
 	public Direction getDirection(Position pos) {
 		return Direction.randomDirection();
 	}
+
+	@Override
+	public void startEpisode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endEpisode() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
