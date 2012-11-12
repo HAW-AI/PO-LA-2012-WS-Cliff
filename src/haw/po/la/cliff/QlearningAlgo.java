@@ -8,15 +8,24 @@ public class QlearningAlgo implements Algo {
 	//Off-policy
 	protected Map<Pair<Position,Direction>, Double> brain;
 	private double alpha; //Lernrate
+	private double epsylon;
+	
+	public QlearningAlgo(double alpha, double epsylon) {
+		this.brain = new HashMap <Pair<Position,Direction>, Double>();
+		this.alpha = alpha;
+		this.epsylon = epsylon;
+	}
 	
 	public QlearningAlgo(double alpha) {
 		this.brain = new HashMap <Pair<Position,Direction>, Double>();
 		this.alpha = alpha;
+		this.epsylon = 0.1;
 	}
 	
 	public QlearningAlgo() {
 		this.brain = new HashMap <Pair<Position,Direction>, Double>();
 		this.alpha = 0.2;
+		this.epsylon = 0.1;
 	}
 	
 	@Override
@@ -49,6 +58,7 @@ public class QlearningAlgo implements Algo {
 		}else{
 			brain.put(key, reward);
 		}
+		System.out.println(this);
 
 	}
 
@@ -64,11 +74,9 @@ public class QlearningAlgo implements Algo {
 			}
 		}
 		
-		int probability = (int)(Math.random()*10)+1;  //1-10
-		if(probability == 1){
-			dir = dir.leftOfThis() ;
-		}else if(probability == 10){
-			dir = dir.rightOfThis();
+		int probability = (int)(Math.random()*1000)+1;  //1-10
+		if(probability <= epsylon * 10){
+			dir = Direction.randomDirection();
 		}
 		return dir;
 	}
