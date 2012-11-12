@@ -45,24 +45,29 @@ public class EnvironmentImpl implements Environment {
 		Position nextPos = pos;
 		
 		double reward = normReward;
-		switch (dir){
-			case UP: //System.out.println("UP");
-				if(pos.y()-1 >= 0){ nextPos = new Position(pos.x(), pos.y()-1);}
-				break;
-			case DOWN: //System.out.println("DOWN");
-				if(pos.y()+1 < height){ nextPos = new Position(pos.x(), pos.y()+1);}
-				break;
-			case LEFT: //System.out.println("LEFT");
-				if(pos.x()-1 >=0){ nextPos = new Position(pos.x()-1, pos.y());}
-				break;
-			case RIGHT: //System.out.println("RIGHT");
-				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
-				break;
+		
+		// don't move from game ending positions
+		if (!isGameEndingPosition(pos)) {
+    		switch (dir){
+    			case UP: //System.out.println("UP");
+    				if(pos.y()-1 >= 0){ nextPos = new Position(pos.x(), pos.y()-1);}
+    				break;
+    			case DOWN: //System.out.println("DOWN");
+    				if(pos.y()+1 < height){ nextPos = new Position(pos.x(), pos.y()+1);}
+    				break;
+    			case LEFT: //System.out.println("LEFT");
+    				if(pos.x()-1 >=0){ nextPos = new Position(pos.x()-1, pos.y());}
+    				break;
+    			case RIGHT: //System.out.println("RIGHT");
+    				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
+    				break;
+    		}
 		}
 		
 		if(cliffList.contains(nextPos)){
 			//System.out.println("Run into cliff");
 			reward = cliffReward;
+			nextPos = pos;
 		}else if (nextPos.equals(finishPos)){
 			reward = finishReward;
 			//System.out.println("REACHED GOAL!!!");
@@ -71,6 +76,10 @@ public class EnvironmentImpl implements Environment {
 		//System.out.println("("+pos.x()+","+pos.y()+") -"+dir+"-> ("+nextPos.x()+","+nextPos.y()+") Reward: "+reward);
 		
 		return new Pair<Position, Double>(nextPos,reward);
+	}
+	
+	public boolean isGameEndingPosition(Position pos) {
+        return getFinishPosition().equals(pos) || getCliffPositions().contains(pos);
 	}
 	
 	public boolean isRunning(){

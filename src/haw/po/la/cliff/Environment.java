@@ -45,6 +45,13 @@ public interface Environment {
 	
 	/**
 	 * 
+	 * @param pos position
+	 * @return true if game cannot continue from the supplied position
+	 */
+	public boolean isGameEndingPosition(Position pos);
+	
+	/**
+	 * 
 	 * @return true if round are running and nextState() possible, otherwise agent had moved to cliff or finished the round, return false
 	 */
 	public boolean isRunning();
