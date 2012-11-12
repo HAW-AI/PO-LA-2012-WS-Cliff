@@ -14,4 +14,10 @@ public interface Agent {
 	 */
 	public Position getPosition();
 	
+	/**
+	 * Set the agent position
+	 * @param pos new agent position
+	 */
+	public void setPosition(Position pos);
+	
 }

@@ -1,6 +1,6 @@
 package haw.po.la.cliff;
 
-public class AgentImpl {
+public class AgentImpl implements Agent {
 	
 	private EnvironmentImpl env;
 	private Algo algo;
@@ -22,4 +22,9 @@ public class AgentImpl {
     }
     
     public Position getPosition(){ return agentPos;}
+
+    @Override
+    public void setPosition(Position pos) {
+        agentPos = pos;
+    }
 }

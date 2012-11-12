@@ -19,4 +19,14 @@ public interface Algo {
 	 */
 	public Direction getDirection(Position pos);
 	
+	/**
+	 * Only for episode based algorithms. Signal the start of a new episode.
+	 */
+	public void startEpisode();
+
+    /**
+     * Only for episode based algorithms. Signal the end of an episode.
+     */
+	public void endEpisode();
+	
 }
