@@ -53,7 +53,9 @@ public class GuiImpl extends Canvas implements Gui{
 	}
 	
 	public void paint (Graphics g){
-		this.g = g; //MAC
+	    if (System.getProperty("os.name").equals("Mac OS X")) {
+	        this.g = g;
+	    }
 		
 		//Grid
 		g.setColor(Color.black);
@@ -109,7 +111,9 @@ public class GuiImpl extends Canvas implements Gui{
     		drawAgent();
     	}
 
-        setVisible(false); //MAC
-        setVisible(true); //MAC
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            setVisible(false);
+            setVisible(true);
+        }
     }
 }
