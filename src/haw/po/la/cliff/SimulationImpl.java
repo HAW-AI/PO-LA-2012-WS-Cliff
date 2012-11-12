@@ -49,9 +49,7 @@ public class SimulationImpl implements Simulation {
         System.out.println("  isRunning: " + isRunning());
         System.out.println("  is finish: " + env.getFinishPosition().equals(position));
         System.out.println("  is cliff: " + env.getCliffPositions().contains(position));
-        return isRunning()
-                && (env.getFinishPosition().equals(position) ||
-                        env.getCliffPositions().contains(position));
+        return isRunning() && env.isGameEndingPosition(position);
     }
     
     private void startEpisode() {
