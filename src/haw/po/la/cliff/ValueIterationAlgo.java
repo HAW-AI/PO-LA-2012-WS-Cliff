@@ -131,4 +131,12 @@ public class ValueIterationAlgo implements Algo {
     private Direction policy(Position state) {
         return values.containsKey(state) ? values.get(state).second() : Direction.randomDirection();
     }
+
+    @Override
+    public void startEpisode() {
+    }
+
+    @Override
+    public void endEpisode() {
+    }
 }
