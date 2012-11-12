@@ -168,7 +168,7 @@ public class MonteCarloAlgo implements Algo {
 				returnDir = Direction.values()[explorerEnumIndex];
 			}
 		} else {
-			exploitEnumIndex = (int) (Math.random() * 4);// if policy don't contains an exploit, then random action choice
+			exploitEnumIndex = (int) (Math.random() * 4);// if policy don't contains an exploit, then random choice
 			returnDir = Direction.values()[exploitEnumIndex];
 		}
 
