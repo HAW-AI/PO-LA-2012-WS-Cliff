@@ -19,7 +19,7 @@ public class Main {
 		
 		SimulationImpl sim = new SimulationImpl(env);
 		for(int i = 0; i < 10000; i++){
-		Thread.sleep(5);//wait for x secs
+		Thread.sleep(50);//wait for x secs
 		sim.step();
 		}
 	}
