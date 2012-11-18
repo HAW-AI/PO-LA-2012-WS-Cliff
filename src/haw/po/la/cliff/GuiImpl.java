@@ -6,15 +6,26 @@ package haw.po.la.cliff;
  *
  */
 
+import java.awt.Button;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Panel;
+
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class GuiImpl extends Canvas implements Gui{
+public class GuiImpl extends Panel implements Gui{
 	
+	Simulation sim;
+	
+	//Grid-Params
 	private int startx = 30;
 	private int starty = 10;
 	private int fieldSize = 30;
@@ -30,7 +41,14 @@ public class GuiImpl extends Canvas implements Gui{
 	public List<Position> cliffList;
 	public Position agentPos;
 	
+	//Buttons etc.
+	private String[] lernAlgoArr = {"Random","ValueIteration","SARSA","Q-Learning","Monte Carlo"};
+	private JComboBox learningAlgos = new JComboBox(lernAlgoArr);
+	private Button goButton = new Button("Go");
+	private Button stopButton = new Button("Stop");
+	
 	public GuiImpl(EnvironmentImpl env){
+		sim = new SimulationImpl(env,this);
 		g = getGraphics();
 		this.startField = env.getStartPosition();
 		this.endField = env.getFinishPosition();
@@ -43,13 +61,46 @@ public class GuiImpl extends Canvas implements Gui{
 		frame.setResizable(true);
 		frame.add(this);
 		frame.pack();
-		frame.setSize(400,400);
+		frame.setSize(600,400);
 		init();
 		frame.setVisible(true);	
 	}
 	
 	public void init() {
 		g = getGraphics();
+		final Panel panel = new Panel(new GridLayout(4,1));
+		add(panel);
+		panel.add(learningAlgos);
+		goButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent evt){
+				goActionPerformed(evt);
+			}
+		});
+		panel.add(goButton);
+		stopButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent evt){
+				stopActionPerformed(evt);
+			}
+		});
+		panel.add(stopButton);
+	}
+	
+	private void goActionPerformed(ActionEvent evt){
+		Algorithm algo = null;
+		switch(learningAlgos.getSelectedIndex()){
+		case 0: algo = Algorithm.RANDOM; break;
+		case 1: algo = Algorithm.VALUE_ITERATION; break;
+		case 2: algo = Algorithm.SARSA; break;
+		case 3: algo = Algorithm.Q_LEARNING; break;
+		case 4: algo = Algorithm.MONTE_CARLO; break;
+		default: algo = Algorithm.RANDOM;
+		}
+		sim.setAlgo(algo);
+		sim.go(20);
+	}
+	
+	private void stopActionPerformed(ActionEvent evt){
+		sim.stop();
 	}
 	
 	public void paint (Graphics g){

@@ -9,6 +9,15 @@ public class SimulationImpl implements Simulation {
 	private boolean isRunning;
 	private Position position;
 
+	public SimulationImpl(EnvironmentImpl env, GuiImpl gui){
+		this.env = env;
+		this.gui = gui;
+//		this.algo = new ValueIterationAlgo(env);
+		this.algo = new MonteCarloAlgo(env);
+		this.agent = new AgentImpl(env, algo);
+		this.isRunning = false;
+	}
+	
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
 		this.gui = new GuiImpl(env);
@@ -16,6 +25,20 @@ public class SimulationImpl implements Simulation {
 		this.algo = new MonteCarloAlgo(env);
 		this.agent = new AgentImpl(env, algo);
 		this.isRunning = false;
+	}
+	
+	public void setAlgo(Algorithm algorithm){
+		Algo newAlgo = null;
+		switch (algorithm){
+		case RANDOM: newAlgo = new RandomAlgo(); break;
+		case VALUE_ITERATION: newAlgo = new ValueIterationAlgo(env); break;
+		case SARSA: newAlgo = new SarsaAlgo(); break;
+		case Q_LEARNING: newAlgo = new QlearningAlgo(); break;
+		case MONTE_CARLO: newAlgo = new MonteCarloAlgo(env); break;
+		default: this.algo = new RandomAlgo();
+		}
+		this.algo = newAlgo;
+		this.agent = new AgentImpl(env, algo);
 	}
     
     @Override
@@ -30,6 +53,21 @@ public class SimulationImpl implements Simulation {
         if (shouldEndEpisode()) {
             endEpisode();
         }
+    }
+    
+    private boolean run = true;
+    public void stop(){
+    	run = false;
+    }
+    
+    public void go(int stepTime){
+    	while(run){
+    		step();
+    		try {
+				Thread.sleep(stepTime);
+				if(!run){break;}
+			} catch (InterruptedException e) {}
+    	}
     }
     
     private boolean shouldStartEpisode() {
