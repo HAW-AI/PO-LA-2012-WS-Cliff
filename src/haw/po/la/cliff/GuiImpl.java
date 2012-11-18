@@ -96,7 +96,7 @@ public class GuiImpl extends Panel implements Gui{
 		default: algo = Algorithm.RANDOM;
 		}
 		sim.setAlgo(algo);
-		sim.go(20);
+		sim.go(50);
 	}
 	
 	private void stopActionPerformed(ActionEvent evt){

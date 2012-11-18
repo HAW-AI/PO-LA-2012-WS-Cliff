@@ -55,19 +55,30 @@ public class SimulationImpl implements Simulation {
         }
     }
     
-    private boolean run = true;
+    //private volatile Thread run = Thread.currentThread();
     public void stop(){
-    	run = false;
+    	//run.interrupt();
     }
     
     public void go(int stepTime){
-    	while(run){
-    		step();
-    		try {
-				Thread.sleep(stepTime);
-				if(!run){break;}
-			} catch (InterruptedException e) {}
-    	}
+    	//TODO run and interrupt step-loop
+//    	while (!run.isInterrupted()) {
+//    	    try {
+//    	        step();
+//    	        Thread.sleep(stepTime);
+//    	    } catch (InterruptedException ex) {
+//    	        run.interrupt();
+//    	    }
+//    	    run.interrupt();
+//    	}
+    	
+//    	while(run){
+//    		step();
+//    		try {
+//				Thread.sleep(stepTime);
+//				if(!run){break;}
+//			} catch (InterruptedException e) {}
+//    	}
     }
     
     private boolean shouldStartEpisode() {
