@@ -37,6 +37,8 @@ public class MonteCarloAlgo implements Algo {
 	private ArrayList<Pair<Position, Direction>> pairList;
 	private List<Position> statelist;
 	private int episodeCounter;
+	private int lost;
+	private int win;
 
 	/**
 	 * default epsilon = 0.4
@@ -55,6 +57,10 @@ public class MonteCarloAlgo implements Algo {
 		this.exploit = (1 - this.epsilon)
 				+ (this.epsilon / Direction.values().length);
 		this.policyInit = 1.0 / Direction.values().length;
+		
+	this.lost=0;
+	this.win =0;
+		
 		initArrays();
 	}
 
@@ -96,9 +102,10 @@ public class MonteCarloAlgo implements Algo {
 	 */
 	@Override
 	public void endEpisode() {
-		System.out.println("\n\n\t\tEND EPSIODE " + this.episodeCounter
-				+ "\n\n");
 		this.episodeCounter++;
+		System.out.println("\n\n\t\tEND EPSIODE " + this.episodeCounter
+				+ "\n\tWIN: "+this.win+"\tLOST: "+this.lost+"\tW/L-RATIO: "+(double)(this.win/this.lost)+"\n");
+		
 
 		double[] sortedActionEvaluation = new double[4];
 
@@ -221,6 +228,17 @@ public class MonteCarloAlgo implements Algo {
 			Position resultingPos, Double reward) {
 		Pair<Position, Direction> firstPair = new Pair<Position, Direction>(
 				initialPos, dir);
+		
+		
+		//if(resultingPos==this.env.getFinishPosition()){
+			if(reward==20.0){
+			this.win++;
+		}
+		if(this.env.getCliffPositions().contains(resultingPos)){
+			this.lost++;
+		}
+		
+		
 		// for each pair (s,a) in episode
 		// first occurrence
 		if (!this.pairList.contains(firstPair)) {
