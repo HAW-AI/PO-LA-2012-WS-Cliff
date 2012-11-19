@@ -208,19 +208,7 @@ public class MonteCarloAlgo implements Algo {
 				}
 
 			}
-			//debug loop-------------- fehler beim setzen der policy, manchmal werden nicht alle 4 gesetzt, 
-			//dann insgesamt über 100% --> index out of bounds
-			double value=0;
-			for(int k=0;k<4;k++){
-				value =value+ this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][k];
-				if(this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][k]== 0.25){
-					System.out.println("ERROR 1");
-				}
-			}
-			if(value>1.0){
-				System.out.println("ERROR 2");
-			}
-			
+					
 		}
 
 		this.pairList = null;
@@ -240,7 +228,7 @@ public class MonteCarloAlgo implements Algo {
 			// Append r to returns(s,a)
 			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]
 					.add(reward);
-			System.out.println("\t\t\nFROM: "+initialPos+"\t"+dir+"\tto: "+resultingPos+"\t get REWARD: " + reward);
+//			System.out.println("\t\t\nFROM: "+initialPos+"\t"+dir+"\tto: "+resultingPos+"\t get REWARD: " + reward);
 		}
 	}
 
