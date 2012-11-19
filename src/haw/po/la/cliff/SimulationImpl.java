@@ -9,7 +9,8 @@ public class SimulationImpl implements Simulation {
 	private EnvironmentImpl env;
 	private AgentImpl agent;
 	private Algo algo;
-	private boolean isRunning;
+    private boolean isRunningEpisode;
+    private boolean isRunningSimulation;
 	private Position position;
 	
 	private long stepTime = 50;
@@ -20,7 +21,7 @@ public class SimulationImpl implements Simulation {
 //		this.algo = new ValueIterationAlgo(env);
 		this.algo = new MonteCarloAlgo(env);
 		this.agent = new AgentImpl(env, algo);
-		this.isRunning = false;
+		this.isRunningEpisode = false;
 		
 		this.observers = new LinkedList<SimulationObserver>();
 	}
@@ -55,17 +56,17 @@ public class SimulationImpl implements Simulation {
     
     public void stop(){
         System.out.println("stop");
-        isRunning = false;
+        isRunningSimulation = false;
     }
     
     public void start() {
         System.out.println("start");
-        isRunning = true;
+        isRunningSimulation = true;
         new Thread(new Runnable() {
             
             @Override
             public void run() {
-                while (isRunning) {
+                while (isRunningSimulation) {
                     step();
                     try {
                         Thread.sleep(stepTime);
@@ -92,16 +93,16 @@ public class SimulationImpl implements Simulation {
         agent.setPosition(env.getStartPosition());
         position = env.getStartPosition();
         algo.startEpisode();
-        isRunning = true;
+        isRunningEpisode = true;
     }
     
     private void endEpisode() {
         algo.endEpisode();
-        isRunning = false;
+        isRunningEpisode = false;
     }
     
     public boolean isRunning() {
-        return isRunning;
+        return isRunningEpisode;
     }
     
     
