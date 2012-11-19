@@ -47,7 +47,7 @@ public class EnvironmentImpl implements Environment {
 		double reward = normReward;
 		
 		// don't move from game ending positions
-		if (!isGameEndingPosition(pos)) {//-----??
+		if (!isGameEndingPosition(pos)) {
     		switch (dir){
     			case UP: //System.out.println("UP");
     				if(pos.y()-1 >= 0){ nextPos = new Position(pos.x(), pos.y()-1);}
@@ -62,12 +62,12 @@ public class EnvironmentImpl implements Environment {
     				if(pos.x()+1 < width){ nextPos = new Position(pos.x()+1, pos.y());}
     				break;
     		}
-	}///-------??
+	}
 		
 		if(cliffList.contains(nextPos)){
 			//System.out.println("Run into cliff");
 			reward = cliffReward;
-		nextPos = pos;//////////---------??
+		//nextPos = pos; --------- return cliff position
 		}else if (nextPos.equals(finishPos)){
 			reward = finishReward;
 			//System.out.println("REACHED GOAL!!!");
