@@ -165,6 +165,11 @@ public class MonteCarloAlgo implements Algo {
 				// create an array where the only the index of best rated actions will be saved
 				int[] bestActionIndex = new int[numOfBestActions];
 
+				
+				//save the index of the best rated action
+				bestActionIndex[0]=actionIndex[indexOfActionIndex];
+				
+				
 				//check if only one index of best rated action saved
 				if (numOfBestActions == 1) {
 					this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][bestActionIndex[0]] = this.exploit;
@@ -185,6 +190,13 @@ public class MonteCarloAlgo implements Algo {
 					// set randomNumber to choose one of the best rated actions 
 					int randNumber = (int) (Math.random() * numOfBestActions);
 
+					
+					//debug
+					if(randNumber>=numOfBestActions){
+						System.out.println("ERROR 3");
+					}
+					
+					
 					for (int j = 0; j < bestActionIndex.length; j++) {
 						if (randNumber == j) {
 							this.policy[this.statelist.get(i).x()][this.statelist.get(i).y()][bestActionIndex[j]] = this.exploit;
@@ -206,7 +218,7 @@ public class MonteCarloAlgo implements Algo {
 				}
 			}
 			if(value>1.0){
-				System.out.println("ERROR 1");
+				System.out.println("ERROR 2");
 			}
 			
 		}
