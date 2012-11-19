@@ -1,5 +1,8 @@
 package haw.po.la.cliff;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SimulationImpl implements Simulation {
 	
 	private GuiImpl gui;
@@ -8,23 +11,18 @@ public class SimulationImpl implements Simulation {
 	private Algo algo;
 	private boolean isRunning;
 	private Position position;
-
-	public SimulationImpl(EnvironmentImpl env, GuiImpl gui){
-		this.env = env;
-		this.gui = gui;
-//		this.algo = new ValueIterationAlgo(env);
-		this.algo = new MonteCarloAlgo(env);
-		this.agent = new AgentImpl(env, algo);
-		this.isRunning = false;
-	}
 	
+	private long stepTime = 50;
+	private List<SimulationObserver> observers;
+
 	public SimulationImpl(EnvironmentImpl env){
 		this.env = env;
-		this.gui = new GuiImpl(env);
 //		this.algo = new ValueIterationAlgo(env);
 		this.algo = new MonteCarloAlgo(env);
 		this.agent = new AgentImpl(env, algo);
 		this.isRunning = false;
+		
+		this.observers = new LinkedList<SimulationObserver>();
 	}
 	
 	public void setAlgo(Algorithm algorithm){
@@ -48,37 +46,38 @@ public class SimulationImpl implements Simulation {
         }
 
         position = agent.act();
-        gui.render(position);
+        notifyObservers(position);
 
         if (shouldEndEpisode()) {
             endEpisode();
         }
     }
     
-    //private volatile Thread run = Thread.currentThread();
     public void stop(){
-    	//run.interrupt();
+        System.out.println("stop");
+        isRunning = false;
     }
     
-    public void go(int stepTime){
-    	//TODO run and interrupt step-loop
-//    	while (!run.isInterrupted()) {
-//    	    try {
-//    	        step();
-//    	        Thread.sleep(stepTime);
-//    	    } catch (InterruptedException ex) {
-//    	        run.interrupt();
-//    	    }
-//    	    run.interrupt();
-//    	}
-    	
-//    	while(run){
-//    		step();
-//    		try {
-//				Thread.sleep(stepTime);
-//				if(!run){break;}
-//			} catch (InterruptedException e) {}
-//    	}
+    public void start() {
+        System.out.println("start");
+        isRunning = true;
+        new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                while (isRunning) {
+                    step();
+                    try {
+                        Thread.sleep(stepTime);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("exit run loop");
+            }
+            
+        }).start();
     }
     
     private boolean shouldStartEpisode() {
@@ -103,5 +102,16 @@ public class SimulationImpl implements Simulation {
     
     public boolean isRunning() {
         return isRunning;
+    }
+    
+    
+    public void addObserver(SimulationObserver observer) {
+        observers.add(observer);
+    }
+    
+    private void notifyObservers(Position position) {
+        for (SimulationObserver observer : observers) {
+            observer.updatePosition(position);
+        }
     }
 }

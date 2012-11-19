@@ -11,7 +11,5 @@ public interface Simulation {
 	public void setAlgo(Algorithm algo);
 
 	public void stop();
-
-	public void go(int i);
 	
 }

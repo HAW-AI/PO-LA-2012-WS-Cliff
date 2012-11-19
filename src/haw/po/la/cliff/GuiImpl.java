@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class GuiImpl extends Panel implements Gui{
+public class GuiImpl extends Panel implements Gui, SimulationObserver{
 	
-	Simulation sim;
+	SimulationImpl sim;
 	
 	//Grid-Params
 	private int startx = 30;
@@ -47,8 +47,8 @@ public class GuiImpl extends Panel implements Gui{
 	private Button goButton = new Button("Go");
 	private Button stopButton = new Button("Stop");
 	
-	public GuiImpl(EnvironmentImpl env){
-		sim = new SimulationImpl(env,this);
+	public GuiImpl(EnvironmentImpl env, SimulationImpl sim){
+	    this.sim = sim;
 		g = getGraphics();
 		this.startField = env.getStartPosition();
 		this.endField = env.getFinishPosition();
@@ -85,6 +85,11 @@ public class GuiImpl extends Panel implements Gui{
 		panel.add(stopButton);
 	}
 	
+	@Override
+	public void updatePosition(Position position) {
+	    render(position);
+	}
+	
 	private void goActionPerformed(ActionEvent evt){
 		Algorithm algo = null;
 		switch(learningAlgos.getSelectedIndex()){
@@ -95,8 +100,9 @@ public class GuiImpl extends Panel implements Gui{
 		case 4: algo = Algorithm.MONTE_CARLO; break;
 		default: algo = Algorithm.RANDOM;
 		}
+		sim.stop();
 		sim.setAlgo(algo);
-		sim.go(50);
+		sim.start();
 	}
 	
 	private void stopActionPerformed(ActionEvent evt){

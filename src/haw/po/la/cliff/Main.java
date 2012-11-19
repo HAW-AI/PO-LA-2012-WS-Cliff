@@ -16,7 +16,9 @@ public class Main {
 //		
 //		//EnvironmentImpl env = new EnvironmentImpl(3,8,new Position(0,0), new Position(7,0),cliffList);
 		EnvironmentImpl env = new EnvironmentImpl(3,5);
-		Gui gui = new GuiImpl(env);
+		SimulationImpl sim = new SimulationImpl(env);
+		GuiImpl gui = new GuiImpl(env, sim);
+		sim.addObserver(gui);
 //		
 //		SimulationImpl sim = new SimulationImpl(env);
 //		for(int i = 0; i < 1000000; i++){
