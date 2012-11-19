@@ -72,13 +72,12 @@ public class SimulationImpl implements Simulation {
 //    	    run.interrupt();
 //    	}
     	
-//    	while(run){
-//    		step();
-//    		try {
-//				Thread.sleep(stepTime);
-//				if(!run){break;}
-//			} catch (InterruptedException e) {}
-//    	}
+    	for(int i = 0; i<1000; i++){
+    		step();
+    		try {
+				Thread.sleep(stepTime);
+			} catch (InterruptedException e) {}
+    	}
     }
     
     private boolean shouldStartEpisode() {
