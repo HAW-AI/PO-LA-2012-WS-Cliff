@@ -102,6 +102,12 @@ public class MonteCarloAlgo implements Algo {
 	 */
 	@Override
 	public void endEpisode() {
+		
+		if(this.episodeCounter>=400){
+			this.epsilon=0.05;
+		}
+		
+		
 		this.episodeCounter++;
 		System.out.println("\n\n\t\tEND EPSIODE " + this.episodeCounter
 				+ "\n\tWIN: "+this.win+"\tLOST: "+this.lost+"\tW/L-RATIO: "+(double)(((double)this.win-(double)this.lost)/this.episodeCounter)+"\n");
@@ -252,41 +258,53 @@ public class MonteCarloAlgo implements Algo {
 
 	@Override
 	public Direction getDirection(Position pos) {
-
-		Direction[] dirArray = new Direction[1000];
-		int dirArrayIndex = 0;
 		Direction returnDir = null;
-
-		/*
-		 * fill an 1000 slot array by res of 0.1 % the array shows probability
-		 * of actions
-		 */
-		for (int a = 0; a < this.policy[pos.x()][pos.y()].length; a++) {
-			int index = 0;
-			Direction aAction = Direction.values()[a];
-
-			index = (int) (this.policy[pos.x()][pos.y()][a] * 1000);
-
-			
-			
-			for (int i = dirArrayIndex; i < (index + dirArrayIndex); i++) {
-				dirArray[i] = aAction;
-			}
-			dirArrayIndex = dirArrayIndex + index;
+		double rand = Math.random();
 		
+		//zu x prozent trifft exploit, daher exploit zuerst mit rand pruefen
+		double[] actionArray = new double [Direction.values().length];
+
+		//create and sort array  to find exploit easy
+		actionArray = this.policy[pos.x()][pos.y()];
+		Arrays.sort(actionArray);
+		
+		//set best
+		double bestVal=actionArray[3];
+		
+		if(rand<bestVal){//take exploit
+			for(int a=0;a<Direction.values().length;a++){
+				//find exploit direction
+				if(this.policy[pos.x()][pos.y()][a]==bestVal){
+					//set exploit direction 
+					returnDir=Direction.values()[a];
+					//break the loop
+					a=Direction.values().length;
+				}
+			}
+		}else{
+			int count=0;
+			while(returnDir==null){
+				
+				int a= (int)(Math.random()*4);
+				
+				//find first explore direction
+				if(this.policy[pos.x()][pos.y()][a]!=bestVal){
+					//set explore direction 
+					returnDir=Direction.values()[a];
+					//break the loop
+					a=Direction.values().length;
+				}
+				
+				if(count==10){
+					//set explore direction 
+					returnDir=Direction.values()[a];
+				}
+				count++;
+			}
 		}
 
-		/*
-		 * now let the probability actrandom between 0 and 999 set the "best"
-		 * direction
-		 */
-		int random = (int) (Math.random() * 1000);
-		returnDir = dirArray[random];
-
-		//debug
 		if(returnDir==null){
-			System.out.println("\n\n\t\tERROR getDir - return Dir = null\n\t\trandom= "+random+"\n\t\t");
-			returnDir=Direction.DOWN;
+			System.out.println("getDir  --> NULL");
 		}
 		
 		return returnDir;
