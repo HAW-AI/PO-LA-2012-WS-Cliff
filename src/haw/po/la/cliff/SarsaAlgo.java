@@ -39,28 +39,20 @@ public class SarsaAlgo implements Algo{
 	public void learn(Position initialPos, Direction dir,Position resultingPos, Double reward) {
 		//idea: hold list with steps = episode
 		episode.add(new Pair<Pair<Position, Direction>, Double>(new Pair<Position, Direction>(initialPos, dir), reward));
-		
-		if(resultingPos.equals(startPos)){
-			System.out.println("Episode!");
-			//start new episode
-			episode.add(new Pair<Pair<Position, Direction>, Double>(new Pair<Position, Direction>(resultingPos,null),null));
-			learnEpisode();
-			
-			episode.clear();
-		}
 	}
 			
 	private void learnEpisode(){	
 		
-		for(int i = 0; i < episode.size()-2; i++){
+		for(int i = 0; i < episode.size()-1; i++){
 			Pair<Position,Direction> key = episode.get(i).first();
 			if(brain.containsKey(episode.get(i).first())){
 				brain.put(key, (double)Math.round((brain.get(key) + alpha * (episode.get(i).second() + 0.8 * episode.get(i+1).second() - brain.get(key)))*10)/10 );
+				
 			}else{
 				brain.put(key, episode.get(i).second());
 			}
 		}
-		brain.put(episode.get(episode.size()-2).first(), episode.get(episode.size()-2).second()); //last step to goal/cliff
+		brain.put(episode.get(episode.size()-1).first(), episode.get(episode.size()-1).second()); //last step to goal/cliff
 		System.out.println(this);
 		
 	}
@@ -77,13 +69,24 @@ public class SarsaAlgo implements Algo{
 			}
 		}
 		
-		int probability = (int)(Math.random()*10)+1;  //1-10
-		if(probability == 1){
+		int probability = (int)(Math.random()*100)+1;  //1-100
+		if(probability <= 5){
 			dir = dir.leftOfThis() ;
-		}else if(probability == 10){
+		}else if(probability >= 95){
 			dir = dir.rightOfThis();
 		}
 		return dir;
+	}
+
+	@Override
+	public void startEpisode() {
+		episode.clear();
+		
+	}
+
+	@Override
+	public void endEpisode() {
+		learnEpisode();
 	}
 
 }
