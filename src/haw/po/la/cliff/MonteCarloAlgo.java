@@ -47,7 +47,7 @@ public class MonteCarloAlgo implements Algo {
 	 *            Environment
 	 */
 	public MonteCarloAlgo(Environment env) {
-		this(0.4, env);
+		this(0.3, env);
 	}
 
 	public MonteCarloAlgo(double epsilon, Environment env) {
@@ -104,7 +104,7 @@ public class MonteCarloAlgo implements Algo {
 	public void endEpisode() {
 		this.episodeCounter++;
 		System.out.println("\n\n\t\tEND EPSIODE " + this.episodeCounter
-				+ "\n\tWIN: "+this.win+"\tLOST: "+this.lost+"\tW/L-RATIO: "+(double)(this.win/this.lost)+"\n");
+				+ "\n\tWIN: "+this.win+"\tLOST: "+this.lost+"\tW/L-RATIO: "+(double)(((double)this.win-(double)this.lost)/this.episodeCounter)+"\n");
 		
 
 		double[] sortedActionEvaluation = new double[4];
@@ -280,8 +280,15 @@ public class MonteCarloAlgo implements Algo {
 		 * now let the probability actrandom between 0 and 999 set the "best"
 		 * direction
 		 */
-		returnDir = dirArray[(int) (Math.random() * 1000)];
+		int random = (int) (Math.random() * 1000);
+		returnDir = dirArray[random];
 
+		//debug
+		if(returnDir==null){
+			System.out.println("\n\n\t\tERROR getDir - return Dir = null\n\t\trandom= "+random+"\n\t\t");
+			returnDir=Direction.DOWN;
+		}
+		
 		return returnDir;
 	}
 
