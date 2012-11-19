@@ -5,7 +5,6 @@ import java.util.List;
 
 public class SimulationImpl implements Simulation {
 	
-	private GuiImpl gui;
 	private EnvironmentImpl env;
 	private AgentImpl agent;
 	private Algo algo;

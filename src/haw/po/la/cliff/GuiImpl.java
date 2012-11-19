@@ -7,7 +7,6 @@ package haw.po.la.cliff;
  */
 
 import java.awt.Button;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Panel;
@@ -17,7 +16,6 @@ import javax.swing.JFrame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
