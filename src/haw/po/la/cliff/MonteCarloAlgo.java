@@ -174,17 +174,12 @@ public class MonteCarloAlgo implements Algo {
 		if (!this.pairList.contains(newPair)) {
 			this.pairList.add(newPair);
 		
-			// Append r to returns(s,a)
-//			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()].add(reward);
-			
-			//add r to all states before
+			// Append r to returns(s,a), add r to all states before
 			for(int s=0;s<this.pairList.size();s++){
 				this.returns[this.pairList.get(s).first().x()][this.pairList.get(s).first().y()][this.pairList.get(s).second().ordinal()].add(reward);
 			}
-			
-			
-			
-			//Q(s,a)<--avg(Returns(s,a))		?????????unhelpfully avg= sum / numOfSum  : -4 / 4.....all times -1
+									
+			//Q(s,a)<--avg(Returns(s,a))		
 			this.q[initialPos.x()][initialPos.y()][dir.ordinal()]=getAvg(this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]);
 		}
 		
