@@ -13,10 +13,6 @@ import java.util.List;
 public class MonteCarloAlgo implements Algo {
 
 	/*
-	 * Untested class
-	 * 
-	 * TODO If algo works, then combine arrays and use a map
-	 * 
 	 * ATTENTION: The class, that is using an object of this class, is to be in
 	 * charge of control the start and end of each episode
 	 */
@@ -41,13 +37,13 @@ public class MonteCarloAlgo implements Algo {
 	private int win;
 
 	/**
-	 * default epsilon = 0.3
+	 * default epsilon = 0.2
 	 * 
 	 * @param env
 	 *            Environment
 	 */
 	public MonteCarloAlgo(Environment env) {
-		this(0.05, env);
+		this(0.2, env);
 	}
 
 	public MonteCarloAlgo(double epsilon, Environment env) {
@@ -62,7 +58,6 @@ public class MonteCarloAlgo implements Algo {
 		
 		initArrays();
 	}
-
 	
 
 	/**
@@ -75,6 +70,7 @@ public class MonteCarloAlgo implements Algo {
 		System.out.println("\n\n\t\tNEW EPSIODE\n\n");
 	}
 
+	
 	/**
 	 * use this method to declare the end of an episode
 	 */
@@ -90,8 +86,6 @@ public class MonteCarloAlgo implements Algo {
 			output= output+"   ("+statelist.get(i).x()+","+statelist.get(i).y()+") ";
 		}
 		System.out.println("\nSTATES: "+output+"\n");
-		
-		
 		
 		//for each s in episode
 		for(int s=0;s<this.statelist.size();s++){
@@ -132,10 +126,8 @@ public class MonteCarloAlgo implements Algo {
 			}
 		
 		}
-
 		System.out.println("NEW POLICY");
 		showPolicy();
-		
 	}
 
 	@Override
