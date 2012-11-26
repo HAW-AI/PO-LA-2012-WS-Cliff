@@ -166,7 +166,7 @@ public class MonteCarloAlgo implements Algo {
 		if (!this.pairList.contains(newPair)) {
 			this.pairList.add(newPair);
 		
-			// Append r to returns(s,a), add r to all states before
+			// Append r to returns(s,a), add r to all pairs before too
 			for(int s=0;s<this.pairList.size();s++){
 				this.returns[this.pairList.get(s).first().x()][this.pairList.get(s).first().y()][this.pairList.get(s).second().ordinal()].add(reward);
 			}
