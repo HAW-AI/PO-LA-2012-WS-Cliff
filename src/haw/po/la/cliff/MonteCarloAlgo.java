@@ -47,7 +47,7 @@ public class MonteCarloAlgo implements Algo {
 	 *            Environment
 	 */
 	public MonteCarloAlgo(Environment env) {
-		this(0.3, env);
+		this(0.05, env);
 	}
 
 	public MonteCarloAlgo(double epsilon, Environment env) {
@@ -175,7 +175,14 @@ public class MonteCarloAlgo implements Algo {
 			this.pairList.add(newPair);
 		
 			// Append r to returns(s,a)
-			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()].add(reward);
+//			this.returns[initialPos.x()][initialPos.y()][dir.ordinal()].add(reward);
+			
+			//add r to all states before
+			for(int s=0;s<this.pairList.size();s++){
+				this.returns[this.pairList.get(s).first().x()][this.pairList.get(s).first().y()][this.pairList.get(s).second().ordinal()].add(reward);
+			}
+			
+			
 			
 			//Q(s,a)<--avg(Returns(s,a))		?????????unhelpfully avg= sum / numOfSum  : -4 / 4.....all times -1
 			this.q[initialPos.x()][initialPos.y()][dir.ordinal()]=getAvg(this.returns[initialPos.x()][initialPos.y()][dir.ordinal()]);
